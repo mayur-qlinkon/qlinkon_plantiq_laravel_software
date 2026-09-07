@@ -1,0 +1,56 @@
+{
+    "id": "/",
+    "name": "PlantiQ",
+    "short_name": "PlantiQ",
+    "description": "PlantiQ is software for managing your business — orders, inventory, staff & more.",
+
+    "start_url": "/admin/dashboard",
+    "scope": "/",
+    "display": "standalone",
+    "background_color": "#ffffff",
+    "theme_color": "#82cd47",
+    "orientation": "portrait-primary",
+
+    "icons": [
+        {
+            "src": "/assets/pwa/icon-192.webp",
+            "sizes": "192x192",
+            "type": "image/webp",
+            "purpose": "any"
+        },
+        {
+            "src": "/assets/pwa/icon-192-maskable.webp",
+            "sizes": "192x192",
+            "type": "image/webp",
+            "purpose": "any maskable"
+        },
+        {
+            "src": "/assets/pwa/icon-512.webp",
+            "sizes": "512x512",
+            "type": "image/webp",
+            "purpose": "any"
+        },
+        {
+            "src": "/assets/pwa/icon-512-maskable.webp",
+            "sizes": "512x512",
+            "type": "image/webp",
+            "purpose": "any maskable"
+        }
+    ],
+
+    "screenshots": [
+        {
+            "src": "/assets/pwa/screenshots/desktop.png",
+            "sizes": "390x844",
+            "type": "image/png",
+            "label": "Dashboard"
+        },
+        {
+            "src": "/assets/pwa/screenshots/desktop.png",
+            "sizes": "1280x720",
+            "type": "image/png",
+            "form_factor": "wide",
+            "label": "Dashboard"
+        }
+    ]
+}

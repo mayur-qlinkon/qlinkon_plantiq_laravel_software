@@ -1,0 +1,3421 @@
+<!DOCTYPE html>
+    <html lang="en">
+
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <meta name="csrf-token" content="17R3ByzXZlzEKCAiJXjMxyPmFVht6dBjARNDJriI" />
+        <title>Dashboard</title>
+
+        <link rel="preconnect" href="https://fonts.googleapis.com" />
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+        <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap"
+            rel="stylesheet" />
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css" />
+        <link rel="icon" type="image/png"
+            href="http://127.0.0.1:8000/assets/icons/favicon.webp" />
+
+        
+        
+        <link rel="stylesheet" href="http://127.0.0.1:8000/assets/css/tailwind.min.css?v=1787657511" />
+        
+        <style>
+            :root {
+                /* ─────────────────────────────
+                        Brand Colors
+                        ───────────────────────────── */
+                --brand-500: #008a62;
+                --brand-600: #007050;
+                --brand-700: #007050;
+
+                /* RGB Version (Required for glow/shadows) */
+                --brand-rgb: 0 138 98;
+
+                /* ─────────────────────────────
+                        Light Brand Variations
+                        ───────────────────────────── */
+                --color-brand-50: color-mix(in srgb, var(--brand-500) 10%, white);
+                --color-brand-100: color-mix(in srgb, var(--brand-500) 20%, white);
+                --color-brand-200: color-mix(in srgb, var(--brand-500) 35%, white);
+
+                /* ─────────────────────────────
+                        Layout Variables
+                        ───────────────────────────── */
+                --bg-page: #f4f6f9;
+                --ease: cubic-bezier(0.4, 0, 0.2, 1);
+            }
+
+            .brand-glow {
+                box-shadow:
+                    0 0 10px rgb(var(--brand-rgb) / 0.35),
+                    0 0 20px rgb(var(--brand-rgb) / 0.20),
+                    0 0 32px rgb(var(--brand-rgb) / 0.12);
+            }
+
+            /* Chrome, Safari, Edge, Opera */
+            input[type="number"]::-webkit-outer-spin-button,
+            input[type="number"]::-webkit-inner-spin-button {
+                -webkit-appearance: none;
+                margin: 0;
+            }
+
+            /* Firefox */
+            input[type="number"] {
+                -moz-appearance: textfield;
+            }
+
+            [x-cloak] {
+                display: none !important;
+            }
+
+            .ui-select {
+                -webkit-appearance: none;
+                appearance: none;
+                color-scheme: light;
+                background-color: #fff;
+                color: #111827;
+            }
+
+            .ui-select option {
+                background: #fff;
+                color: #111827;
+            }
+
+            .ui-select:focus {
+                outline: none;
+            }
+
+            select,
+            select option {
+                font-family: inherit;
+            }
+
+            #page-cover {
+                position: fixed;
+                inset: 0;
+                background: var(--bg-page);
+                z-index: 9999;
+                opacity: 1;
+                pointer-events: none;
+                transition: opacity 220ms ease;
+            }
+
+            /* ── Progress Bar ── */
+            #nav-progress {
+                position: fixed;
+                top: 0;
+                left: 0;
+                height: 2px;
+                width: 0%;
+                background: var(--brand-600);
+                z-index: 99999;
+                opacity: 0;
+                transition: width 200ms ease, opacity 300ms ease;
+            }
+
+            /* ── Scrollbar ── */
+            .nav-scroll::-webkit-scrollbar {
+                width: 3px;
+            }
+
+            .nav-scroll::-webkit-scrollbar-track {
+                background: transparent;
+            }
+
+            .nav-scroll::-webkit-scrollbar-thumb {
+                background: transparent;
+                border-radius: 4px;
+            }
+
+            .nav-scroll:hover::-webkit-scrollbar-thumb {
+                background: #e5e7eb;
+            }
+
+            /* ── Sidebar Overlay ── */
+            #sidebar-overlay {
+                position: fixed;
+                inset: 0;
+                background: rgba(0, 0, 0, 0.42);
+                backdrop-filter: blur(3px);
+                z-index: 30;
+                opacity: 0;
+                pointer-events: none;
+                transition: opacity 280ms var(--ease);
+            }
+
+            #sidebar-overlay.active {
+                opacity: 1;
+                pointer-events: auto;
+            }
+
+            /* ── Sidebar ── */
+            #main-sidebar {
+                transition: transform 280ms var(--ease), box-shadow 280ms var(--ease);
+            }
+
+            @media (max-width: 1023px) {
+                #main-sidebar {
+                    position: fixed;
+                    top: 0;
+                    left: 0;
+                    height: 100%;
+                    transform: translateX(-100%);
+                    z-index: 40;
+                    box-shadow: none;
+                }
+
+                #main-sidebar.sidebar-open {
+                    transform: translateX(0);
+                    box-shadow: 20px 0 60px rgba(0, 0, 0, 0.13);
+                }
+
+                .sidebar-close-btn {
+                    display: flex !important;
+                }
+            }
+
+            .sidebar-close-btn {
+                display: none;
+            }
+
+            /* ── Nav Items ── */
+            .nav-item {
+                display: flex;
+                align-items: center;
+                justify-content: space-between;
+                width: 100%;
+                padding: 0.55rem 0.75rem;
+                border-radius: 0.625rem;
+                font-size: 0.875rem;
+                font-weight: 500;
+                color: #6b7280;
+                text-decoration: none;
+                border: none;
+                background: transparent;
+                text-align: left;
+                cursor: pointer;
+                outline: none;
+                transition: background 140ms var(--ease), color 140ms var(--ease), transform 80ms ease;
+            }
+
+            .nav-item:hover {
+                background: #f0f7f4;
+                color: var(--brand-600);
+            }
+
+            .nav-item:hover .nav-icon {
+                color: var(--brand-600);
+            }
+
+            .nav-item:active {
+                transform: scale(0.984);
+            }
+
+            .nav-item.active,
+            .nav-item.active:hover {
+                background: var(--brand-600);
+                color: #fff;
+            }
+
+            .nav-item.active .nav-icon,
+            .nav-item.active:hover .nav-icon {
+                color: #fff;
+            }
+
+            .nav-item.active .nav-chevron,
+            .nav-item.active:hover .nav-chevron {
+                color: rgba(255, 255, 255, 0.6);
+            }
+
+            .nav-item.acc-open:not(.active) {
+                background: #f0f7f4;
+                color: var(--brand-600);
+            }
+
+            .nav-item.acc-open:not(.active) .nav-icon {
+                color: var(--brand-600);
+            }
+
+            .nav-item.acc-open:not(.active) .nav-chevron {
+                color: var(--brand-600);
+            }
+
+            .nav-icon {
+                color: #9ca3af;
+                flex-shrink: 0;
+                transition: color 140ms var(--ease);
+            }
+
+            .nav-chevron {
+                width: 14px;
+                height: 14px;
+                color: #d1d5db;
+                flex-shrink: 0;
+                transition: color 140ms var(--ease), transform 240ms var(--ease);
+            }
+
+            .nav-chevron.rotated {
+                transform: rotate(90deg);
+            }
+
+            /* ── Accordion ── */
+            .acc-wrap {
+                overflow: hidden;
+                max-height: 0;
+                opacity: 0;
+                transition: max-height 255ms var(--ease), opacity 200ms ease;
+            }
+
+            .sub-menu {
+                margin: 3px 0 4px 0.9rem;
+                padding: 2px 0 2px 0.85rem;
+                border-left: 1.5px solid #e5e7eb;
+            }
+
+            .sub-item {
+                display: flex;
+                align-items: center;
+                gap: 0.45rem;
+                padding: 0.4rem 0.6rem;
+                border-radius: 0.5rem;
+                font-size: 0.8125rem;
+                font-weight: 500;
+                color: #6b7280;
+                text-decoration: none;
+                transition: background 130ms var(--ease), color 130ms var(--ease), padding-left 150ms ease;
+            }
+
+            .sub-item:hover {
+                background: #f0f7f4;
+                color: var(--brand-600);
+                padding-left: 0.9rem;
+            }
+
+            .sub-item.active {
+                background: var(--brand-50);
+                color: var(--brand-600);
+                font-weight: 600;
+            }
+
+            .sub-item.active::before {
+                content: '';
+                display: inline-block;
+                width: 5px;
+                height: 5px;
+                border-radius: 50%;
+                background: var(--brand-600);
+                flex-shrink: 0;
+            }
+
+            /* ── Nav Section Labels ── */
+            .nav-section-label {
+                padding: 1.1rem 0.75rem 0.35rem;
+                margin-top: 0.35rem;
+                border-top: 1px solid #f3f4f6;
+                font-size: 0.65rem;
+                font-weight: 700;
+                letter-spacing: 0.08em;
+                text-transform: uppercase;
+                color: #9ca3af;
+            }
+
+            /* The first label has nothing above it to be separated from. */
+            .nav-section-label:first-child {
+                border-top: none;
+                margin-top: 0;
+            }
+
+            .nav-section-label:first-child {
+                padding-top: 0.25rem;
+            }
+
+            /* ── Hamburger ── */
+            .hb-line {
+                display: block;
+                width: 20px;
+                height: 2px;
+                background: #212538;
+                border-radius: 2px;
+                transform-origin: center;
+                transition: transform 250ms var(--ease), opacity 200ms ease, width 200ms ease;
+            }
+
+            #hamburger-btn.is-open .hb-line:nth-child(1) {
+                transform: translateY(7px) rotate(45deg);
+            }
+
+            #hamburger-btn.is-open .hb-line:nth-child(2) {
+                opacity: 0;
+                width: 0;
+            }
+
+            #hamburger-btn.is-open .hb-line:nth-child(3) {
+                transform: translateY(-7px) rotate(-45deg);
+            }
+
+            /* 1. Hide the mini logo by default */
+            .sidebar-logo-mini {
+                display: none !important;
+            }
+
+            /* ── Minimized Desktop Sidebar ── */
+            @media (min-width: 1024px) {
+                #main-sidebar {
+                    transition: width 250ms var(--ease), transform 280ms var(--ease), box-shadow 280ms var(--ease);
+                }
+
+                #main-sidebar.is-minimized {
+                    width: 76px !important;
+                }
+
+                /* Hide extra elements */
+                #main-sidebar.is-minimized .nav-section-label,
+                #main-sidebar.is-minimized .nav-chevron,
+                #main-sidebar.is-minimized .acc-wrap,
+                #main-sidebar.is-minimized .subscription-box {
+                    display: none !important;
+                }
+
+                /* Squeeze the nav items to only show the icon */
+                #main-sidebar.is-minimized .nav-item {
+                    justify-content: center;
+                    padding-left: 0;
+                    padding-right: 0;
+                }
+
+                #main-sidebar.is-minimized .nav-item>span {
+                    width: 18px;
+                    /* Exact width of the Lucide icon */
+                    overflow: hidden;
+                    white-space: nowrap;
+                    margin: 0 auto;
+                }
+
+                /* Hide the large logo, show a tiny version if needed */
+                #main-sidebar.is-minimized .sidebar-logo-img {
+                    display: none;
+                }
+
+                /* 2. When minimized, HIDE the full logo */
+                #main-sidebar.is-minimized .sidebar-logo-img {
+                    display: none !important;
+                }
+
+                /* 3. When minimized, SHOW the mini logo */
+                #main-sidebar.is-minimized .sidebar-logo-mini {
+                    display: flex !important;
+                    margin: 0 auto;
+                    /* Keeps it perfectly centered */
+                }
+
+                /* 4. Fix the header padding so the icon centers properly */
+                #main-sidebar.is-minimized .h-\[60px\] {
+                    padding-left: 0;
+                    padding-right: 0;
+                    justify-content: center;
+                }
+            }
+        </style>
+
+                    <style>
+        [x-cloak] {
+            display: none !important;
+        }
+
+        .cat-pill {
+            display: inline-flex;
+            align-items: center;
+            gap: 7px;
+            padding: 7px 14px;
+            border-radius: 999px;
+            border: 1.5px solid #e5e7eb;
+            background: #fff;
+            font-size: 12.5px;
+            font-weight: 700;
+            color: #4b5563;
+            white-space: nowrap;
+            cursor: pointer;
+            transition:
+                background 140ms ease,
+                color 140ms ease,
+                border-color 140ms ease;
+        }
+
+        .cat-pill:hover {
+            border-color: #d1d5db;
+            background: #f9fafb;
+        }
+
+        .cat-pill.active {
+            background: var(--brand-600);
+            border-color: var(--brand-600);
+            color: #fff;
+        }
+
+        .cat-count {
+            font-size: 10.5px;
+            font-weight: 800;
+            padding: 1px 6px;
+            border-radius: 999px;
+            background: #f3f4f6;
+            color: #6b7280;
+        }
+
+        .cat-pill.active .cat-count {
+            background: rgba(255, 255, 255, 0.18);
+            color: #fff;
+        }
+
+        .action-tile {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 12px 13px;
+            border: 1.5px solid #f1f5f9;
+            border-radius: 14px;
+            background: #fff;
+            text-decoration: none;
+            transition:
+                border-color 140ms ease,
+                box-shadow 140ms ease,
+                transform 80ms ease;
+        }
+
+        .action-tile:hover {
+            border-color: var(--brand-600);
+            box-shadow: 0 4px 14px color-mix(in srgb, var(--brand-600) 12%, transparent);
+        }
+
+        .action-tile:active {
+            transform: scale(0.985);
+        }
+
+        .tile-icon {
+            width: 34px;
+            height: 34px;
+            border-radius: 10px;
+        }
+
+        @media (min-width: 640px) {
+            .action-tile {
+                gap: 12px;
+                padding: 14px 16px;
+            }
+
+            .tile-icon {
+                width: 38px;
+                height: 38px;
+                border-radius: 11px;
+            }
+        }
+
+        .tile-icon {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+            background: color-mix(in srgb, var(--brand-600) 10%, transparent);
+            color: var(--brand-600);
+        }
+
+        .hide-scrollbar::-webkit-scrollbar {
+            display: none;
+        }
+
+        .hide-scrollbar {
+            -ms-overflow-style: none;
+            scrollbar-width: none;
+        }
+    </style>
+    <script id="browser-logger-active">
+(function() {
+    const ENDPOINT = 'http://127.0.0.1:8000/_boost/browser-logs';
+    const logQueue = [];
+    let flushTimeout = null;
+
+    console.log('🔍 Browser logger active (MCP server detected). Posting to: ' + ENDPOINT);
+
+    // Store original console methods
+    const originalConsole = {
+        log: console.log,
+        info: console.info,
+        error: console.error,
+        warn: console.warn,
+        table: console.table
+    };
+
+    // Helper to safely stringify values
+    function safeStringify(obj) {
+        const seen = new WeakSet();
+        return JSON.stringify(obj, (key, value) => {
+            if (typeof value === 'object' && value !== null) {
+                if (seen.has(value)) return '[Circular]';
+                seen.add(value);
+            }
+            if (value instanceof Error) {
+                return {
+                    name: value.name,
+                    message: value.message,
+                    stack: value.stack
+                };
+            }
+            return value;
+        });
+    }
+
+    // Batch and send logs
+    function flushLogs() {
+        if (logQueue.length === 0) return;
+
+        const batch = logQueue.splice(0, logQueue.length);
+
+        fetch(ENDPOINT, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'X-Requested-With': 'XMLHttpRequest'
+            },
+            body: JSON.stringify({ logs: batch })
+        }).catch(err => {
+            // Silently fail to avoid infinite loops
+            originalConsole.error('Failed to send logs:', err);
+        });
+    }
+
+    // Debounced flush (100ms)
+    function scheduleFlush() {
+        if (flushTimeout) clearTimeout(flushTimeout);
+        flushTimeout = setTimeout(flushLogs, 100);
+    }
+
+    // Intercept console methods
+    ['log', 'info', 'error', 'warn', 'table'].forEach(method => {
+        console[method] = function(...args) {
+            // Call original method
+            originalConsole[method].apply(console, args);
+
+            // Capture log data
+            try {
+                logQueue.push({
+                    type: method,
+                    timestamp: new Date().toISOString(),
+                    data: args.map(arg => {
+                        try {
+                            return typeof arg === 'object' ? JSON.parse(safeStringify(arg)) : arg;
+                        } catch (e) {
+                            return String(arg);
+                        }
+                    }),
+                    url: window.location.href,
+                    userAgent: navigator.userAgent
+                });
+
+                scheduleFlush();
+            } catch (e) {
+                // Fail silently
+            }
+        };
+    });
+
+    // Global error handlers for uncaught errors
+    const originalOnError = window.onerror;
+    window.onerror = function boostErrorHandler(errorMsg, url, lineNumber, colNumber, error) {
+        try {
+            logQueue.push({
+                type: 'uncaught_error',
+                timestamp: new Date().toISOString(),
+                data: [{
+                    message: errorMsg,
+                    filename: url,
+                    lineno: lineNumber,
+                    colno: colNumber,
+                    error: error ? {
+                        name: error.name,
+                        message: error.message,
+                        stack: error.stack
+                    } : null
+                }],
+                url: window.location.href,
+                userAgent: navigator.userAgent
+            });
+
+            scheduleFlush();
+        } catch (e) {
+            // Fail silently
+        }
+
+        // Call original handler if it exists
+        if (originalOnError && typeof originalOnError === 'function') {
+            return originalOnError(errorMsg, url, lineNumber, colNumber, error);
+        }
+
+        // Let the error continue to propagate
+        return false;
+    }
+    window.addEventListener('error', (event) => {
+        try {
+            logQueue.push({
+                type: 'window_error',
+                timestamp: new Date().toISOString(),
+                data: [{
+                    message: event.message,
+                    filename: event.filename,
+                    lineno: event.lineno,
+                    colno: event.colno,
+                    error: event.error ? {
+                        name: event.error.name,
+                        message: event.error.message,
+                        stack: event.error.stack
+                    } : null
+                }],
+                url: window.location.href,
+                userAgent: navigator.userAgent
+            });
+
+            scheduleFlush();
+        } catch (e) {
+            // Fail silently
+        }
+
+        // Let the error continue to propagate
+        return false;
+    });
+    window.addEventListener('unhandledrejection', (event) => {
+        try {
+            logQueue.push({
+                type: 'error',
+                timestamp: new Date().toISOString(),
+                data: [{
+                    message: 'Unhandled Promise Rejection',
+                    reason: event.reason instanceof Error ? {
+                        name: event.reason.name,
+                        message: event.reason.message,
+                        stack: event.reason.stack
+                    } : event.reason
+                }],
+                url: window.location.href,
+                userAgent: navigator.userAgent
+            });
+
+            scheduleFlush();
+        } catch (e) {
+            // Fail silently
+        }
+
+        // Let the rejection continue to propagate
+        return false;
+    });
+
+    // Flush on page unload
+    window.addEventListener('beforeunload', () => {
+        if (logQueue.length > 0) {
+            navigator.sendBeacon(ENDPOINT, JSON.stringify({ logs: logQueue }));
+        }
+    });
+})();
+</script>
+</head>
+
+    <body class="bg-[#f4f6f9] font-sans text-gray-800">
+        <div id="nav-progress"></div>
+        <div id="page-cover"></div>
+
+        
+        <div id="sidebar-overlay" onclick="closeSidebar()"></div>
+
+        <div class="flex h-screen w-full overflow-hidden">
+            
+            <aside id="main-sidebar" class="flex w-64 flex-shrink-0 flex-col border-r border-gray-100 bg-white">
+                
+                <div
+                    class="relative flex h-[60px] flex-shrink-0 items-center justify-center border-b border-gray-100 px-4">
+                    
+                    <div class="flex items-center justify-center gap-2.5">
+                        
+                        <img src="http://127.0.0.1:8000/assets/images/logo.webp" alt="Plantiq logo"
+                            class="sidebar-logo-img h-7 w-auto max-w-[150px] object-contain md:h-8 lg:h-9"
+                            onerror="this.onerror=null;this.src='http://127.0.0.1:8000/assets/images/logo.webp';" />
+
+                        
+                        <div
+                            class="sidebar-logo-mini flex h-10 w-10 items-center justify-center overflow-hidden rounded-lg text-white shadow-sm">
+                            <img src="http://127.0.0.1:8000/assets/icons/favicon.webp" alt="Plantiq mini logo"
+                                class="h-full w-full object-contain p-1"
+                                onerror="this.onerror=null;this.src='http://127.0.0.1:8000/assets/icons/favicon.webp';" />
+                        </div>
+                    </div>
+
+                    
+                    <button onclick="closeSidebar()"
+                        class="sidebar-close-btn absolute top-1/2 right-3 h-8 w-8 -translate-y-1/2 items-center justify-center rounded-lg text-gray-400 transition-colors hover:bg-gray-100 hover:text-gray-600">
+                        <i data-lucide="x" class="h-4 w-4"></i>
+                    </button>
+                </div>
+
+                <nav id="sidebar-nav" class="nav-scroll flex-1 space-y-0.5 overflow-y-auto px-3 py-4">
+                    <div class="nav-section-label">Home</div>
+                    <a href="http://127.0.0.1:8000/admin/dashboard" class="nav-item active">
+                        <span class="flex items-center gap-3">
+                            <i data-lucide="home" class="nav-icon h-[18px] w-[18px]"></i> Dashboard
+                        </span>
+                    </a>
+                    
+                    
+                                            <div class="nav-section-label">Tools</div>
+                                                    <a href="http://127.0.0.1:8000/admin/ocr-scanner"
+                                class="nav-item ">
+                                <span class="flex items-center gap-3">
+                                    <i data-lucide="scan-line" class="nav-icon h-[18px] w-[18px]"></i> Doc Scanner
+                                </span>
+                            </a>
+                                                                            <a href="http://127.0.0.1:8000/admin/labels"
+                                class="nav-item ">
+                                <span class="flex items-center gap-3">
+                                    <i data-lucide="printer" class="nav-icon h-[18px] w-[18px]"></i> Label Printing
+                                </span>
+                            </a>
+                                                                            <a href="http://127.0.0.1:8000/admin/bulk-import"
+                                class="nav-item ">
+                                <span class="flex items-center gap-3">
+                                    <i data-lucide="pickaxe" class="nav-icon h-[18px] w-[18px]"></i>
+                                    Bulk Import
+                                </span>
+                            </a>
+                                            
+                                            <div class="nav-section-label">Operations</div>
+                                                                <a href="http://127.0.0.1:8000/admin/orders"
+                            class="nav-item ">
+                            <span class="flex items-center gap-3">
+                                <i data-lucide="list-ordered" class="nav-icon h-[18px] w-[18px]"></i> Order Process
+                            </span>
+                        </a>
+                    
+                    
+                                            <a href="http://127.0.0.1:8000/admin/appointments"
+                            data-owns="/admin/appointment-services,/admin/appointment-slots"
+                            class="nav-item ">
+                            <span class="flex items-center gap-3">
+                                <i data-lucide="calendar-days" class="nav-icon h-[18px] w-[18px]"></i>
+                                Appointments
+                            </span>
+                        </a>
+                    
+                                            <div class="nav-section-label">Sales & Finance</div>
+
+                        
+                                                    <a href="http://127.0.0.1:8000/admin/sales/dashboard"
+                                class="nav-item ">
+                                <span class="flex items-center gap-3">
+                                    <i data-lucide="trending-up" class="nav-icon h-[18px] w-[18px]"></i>
+                                    Sales Dashboard
+                                </span>
+                            </a>
+                        
+                        
+                                                    <a href="http://127.0.0.1:8000/admin/pos" class="nav-item" target="_blank" data-no-spa>
+                                <span class="flex items-center gap-3">
+                                    <i data-lucide="monitor" class="nav-icon h-[18px] w-[18px]"></i>
+                                    POS Counter
+                                </span>
+                            </a>
+                        
+                        
+                                                                                    <a href="http://127.0.0.1:8000/admin/invoices"
+                                    class="nav-item ">
+                                    <span class="flex items-center gap-3">
+                                        <i data-lucide="file-text" class="nav-icon h-[18px] w-[18px]"></i>
+                                        Sales Invoices
+                                    </span>
+                                </a>
+                            
+                            
+                                                            <a href="http://127.0.0.1:8000/admin/invoice-returns"
+                                    class="nav-item ">
+                                    <span class="flex items-center gap-3">
+                                        <i data-lucide="corner-up-left" class="nav-icon h-[18px] w-[18px]"></i>
+                                        Sales Returns
+                                    </span>
+                                </a>
+                            
+                            
+                                                            <a href="http://127.0.0.1:8000/admin/ledger"
+                                    class="nav-item ">
+                                    <span class="flex items-center gap-3">
+                                        <i data-lucide="book-open" class="nav-icon h-[18px] w-[18px]"></i>
+                                        Invoice Ledger
+                                    </span>
+                                </a>
+                            
+                            
+                                                            <a href="http://127.0.0.1:8000/admin/sales/reports"
+                                    class="nav-item ">
+                                    <span class="flex items-center gap-3">
+                                        <i data-lucide="pie-chart" class="nav-icon h-[18px] w-[18px]"></i>
+                                        Analytics & Reports
+                                    </span>
+                                </a>
+                            
+                            
+                                                            <a href="http://127.0.0.1:8000/admin/quotations"
+                                    class="nav-item ">
+                                    <span class="flex items-center gap-3">
+                                        <i data-lucide="quote" class="nav-icon h-[18px] w-[18px]"></i>
+                                        Quotations
+                                    </span>
+                                </a>
+                            
+                            
+                                                            <a href="http://127.0.0.1:8000/admin/challans"
+                                    class="nav-item ">
+                                    <span class="flex items-center gap-3">
+                                        <i data-lucide="truck" class="nav-icon h-[18px] w-[18px]"></i>
+                                        Delivery Challans
+                                    </span>
+                                </a>
+                            
+                            
+                                                            <a href="http://127.0.0.1:8000/admin/challan-returns"
+                                    class="nav-item ">
+                                    <span class="flex items-center gap-3">
+                                        <i data-lucide="rotate-ccw" class="nav-icon h-[18px] w-[18px]"></i>
+                                        Challan Returns
+                                    </span>
+                                </a>
+                                                                        
+                    
+                                                                        <a href="http://127.0.0.1:8000/admin/purchases"
+                                class="nav-item ">
+                                <span class="flex items-center gap-3">
+                                    <i data-lucide="shopping-bag" class="nav-icon h-[18px] w-[18px]"></i>
+                                    Purchases
+                                </span>
+                            </a>
+                        
+                                                    <a href="http://127.0.0.1:8000/admin/purchase-returns"
+                                class="nav-item ">
+                                <span class="flex items-center gap-3">
+                                    <i data-lucide="corner-up-left" class="nav-icon h-[18px] w-[18px]"></i>
+                                    Purchase Returns
+                                </span>
+                            </a>
+                                            
+                    
+                                            <a href="http://127.0.0.1:8000/admin/expenses"
+                            data-owns="/admin/expenses,/admin/expense-categories"
+                            class="nav-item ">
+                            <span class="flex items-center gap-3">
+                                <i data-lucide="banknote" class="nav-icon h-[18px] w-[18px]"></i> Expenses
+                            </span>
+                        </a>
+                    
+                    
+                                            <div class="nav-section-label">Inventory</div>
+
+                        
+                        
+                                                    <a href="http://127.0.0.1:8000/admin/products"
+                                data-owns="/admin/categories,/admin/units,/admin/attributes"
+                                class="nav-item ">
+                                <span class="flex items-center gap-3">
+                                    <i data-lucide="package" class="nav-icon h-[18px] w-[18px]"></i> Products
+                                </span>
+                            </a>
+                        
+                        
+                                                    <a href="http://127.0.0.1:8000/admin/warehouses"
+                                class="nav-item ">
+                                <span class="flex items-center gap-3">
+                                    <i data-lucide="warehouse" class="nav-icon h-[18px] w-[18px]"></i> Warehouses
+                                </span>
+                            </a>
+                        
+                        
+                                                    <a href="http://127.0.0.1:8000/admin/stock-adjustments"
+                                class="nav-item ">
+                                <span class="flex items-center gap-3">
+                                    <i data-lucide="sliders-horizontal" class="nav-icon h-[18px] w-[18px]"></i>
+                                    Stock Adjustments
+                                </span>
+                            </a>
+                        
+                        
+                                                    <a href="http://127.0.0.1:8000/admin/inventory/reports"
+                                class="nav-item ">
+                                <span class="flex items-center gap-3">
+                                    <i data-lucide="clipboard-list" class="nav-icon h-[18px] w-[18px]"></i>
+                                    Inventory Report
+                                </span>
+                            </a>
+                                            
+                    
+                                            <div class="nav-section-label">Production</div>
+
+                        <a href="http://127.0.0.1:8000/admin/production/dashboard"
+                            class="nav-item ">
+                            <span class="flex items-center gap-3">
+                                <i data-lucide="sprout" class="nav-icon h-[18px] w-[18px]"></i>
+                                Production Dashboard
+                            </span>
+                        </a>
+
+                        
+                                                    <a href="http://127.0.0.1:8000/admin/production/layout" data-owns="/admin/production/map"
+                                class="nav-item ">
+                                <span class="flex items-center gap-3">
+                                    <i data-lucide="map" class="nav-icon h-[18px] w-[18px]"></i>
+                                    Production Layout
+                                </span>
+                            </a>
+                        
+                        
+                                                    <a href="http://127.0.0.1:8000/admin/production/plans"
+                                class="nav-item ">
+                                <span class="flex items-center gap-3">
+                                    <i data-lucide="clipboard-list" class="nav-icon h-[18px] w-[18px]"></i>
+                                    Production Plans
+                                </span>
+                            </a>
+                        
+                        
+                                                    <a href="http://127.0.0.1:8000/admin/production/plant-batches"
+                                class="nav-item ">
+                                <span class="flex items-center gap-3">
+                                    <i data-lucide="package-2" class="nav-icon h-[18px] w-[18px]"></i>
+                                    Plant Batches
+                                </span>
+                            </a>
+                        
+                        
+                                                    <a href="http://127.0.0.1:8000/admin/production/activity-templates"
+                                class="nav-item ">
+                                <span class="flex items-center gap-3">
+                                    <i data-lucide="list-checks" class="nav-icon h-[18px] w-[18px]"></i>
+                                    Activity Templates
+                                </span>
+                            </a>
+                        
+                        
+                                                    <a href="http://127.0.0.1:8000/admin/production/zone-assignments"
+                                class="nav-item ">
+                                <span class="flex items-center gap-3">
+                                    <i data-lucide="map-pin" class="nav-icon h-[18px] w-[18px]"></i>
+                                    Zone Assignments
+                                </span>
+                            </a>
+                        
+                        
+                                                    <a href="http://127.0.0.1:8000/admin/production/harvest-lots"
+                                class="nav-item ">
+                                <span class="flex items-center gap-3">
+                                    <i data-lucide="clipboard-list" class="nav-icon h-[18px] w-[18px]"></i>
+                                    Harvest LOT
+                                </span>
+                            </a>
+                                            
+                    
+                                            <div class="nav-section-label">CRM</div>
+
+                                                    <a href="http://127.0.0.1:8000/admin/crm/dashboard"
+                                class="nav-item ">
+                                <span class="flex items-center gap-3">
+                                    <i data-lucide="layout-dashboard" class="nav-icon h-[18px] w-[18px]"></i>
+                                    CRM Dashboard
+                                </span>
+                            </a>
+                        
+                                                    <a href="http://127.0.0.1:8000/admin/crm/leads"
+                                class="nav-item ">
+                                <span class="flex items-center gap-3">
+                                    <i data-lucide="users" class="nav-icon h-[18px] w-[18px]"></i> Leads
+                                </span>
+                            </a>
+                        
+                                                    <a href="http://127.0.0.1:8000/admin/crm/performance"
+                                class="nav-item ">
+                                <span class="flex items-center gap-3">
+                                    <i data-lucide="trending-up" class="nav-icon h-[18px] w-[18px]"></i> Team
+                                    Performance
+                                </span>
+                            </a>
+                        
+                                                    <a href="http://127.0.0.1:8000/admin/crm/pipelines"
+                                data-owns="/admin/crm/stages,/admin/crm/pipelines,/admin/crm/sources,/admin/crm/tags"
+                                class="nav-item ">
+                                <span class="flex items-center gap-3">
+                                    <i data-lucide="git-branch" class="nav-icon h-[18px] w-[18px]"></i> CRM Settings
+                                </span>
+                            </a>
+                                            
+                    
+                                            <div class="nav-section-label">Projects Tracker</div>
+
+                                                    <a href="http://127.0.0.1:8000/admin/projects"
+                                class="nav-item ">
+                                <span class="flex items-center gap-3">
+                                    <i data-lucide="folder-kanban" class="nav-icon h-[18px] w-[18px]"></i> Active
+                                    Projects
+                                </span>
+                            </a>
+                        
+                                                    <a href="http://127.0.0.1:8000/admin/project-renewals"
+                                class="nav-item ">
+                                <span class="flex items-center gap-3">
+                                    <i data-lucide="calendar-clock" class="nav-icon h-[18px] w-[18px]"></i> Renewals
+                                </span>
+                            </a>
+                        
+                                                    <a href="http://127.0.0.1:8000/admin/project-services"
+                                class="nav-item ">
+                                <span class="flex items-center gap-3">
+                                    <i data-lucide="box" class="nav-icon h-[18px] w-[18px]"></i> Services Catalog
+                                </span>
+                            </a>
+                                            
+                                            <div class="nav-section-label">Contacts</div>
+
+                                                    <a href="http://127.0.0.1:8000/admin/clients"
+                                class="nav-item ">
+                                <span class="flex items-center gap-3">
+                                    <i data-lucide="briefcase" class="nav-icon h-[18px] w-[18px]"></i>
+                                    Clients
+                                </span>
+                            </a>
+                        
+                                                    <a href="http://127.0.0.1:8000/admin/suppliers"
+                                class="nav-item ">
+                                <span class="flex items-center gap-3">
+                                    <i data-lucide="building-2" class="nav-icon h-[18px] w-[18px]"></i>
+                                    Suppliers
+                                </span>
+                            </a>
+                                            
+                    
+
+                                            <div class="nav-section-label">Website & CMS</div>
+
+                        
+                                                    <a href="http://127.0.0.1:8000/admin/storefront-builder"
+                                class="nav-item ">
+                                <span class="flex items-center gap-3">
+                                    <i data-lucide="layout" class="nav-icon h-[18px] w-[18px]"></i>
+                                    Visual Builder
+                                </span>
+                            </a>
+                        
+                        
+                                                    <a href="http://127.0.0.1:8000/admin/banners"
+                                class="nav-item ">
+                                <span class="flex items-center gap-3">
+                                    <i data-lucide="image" class="nav-icon h-[18px] w-[18px]"></i>
+                                    Promotional Banners
+                                </span>
+                            </a>
+                        
+                        
+                                                    <div class="acc-group"
+                                data-open="false">
+                                <button
+                                    class="nav-item acc-trigger ">
+                                    <span class="flex items-center gap-3">
+                                        <i data-lucide="globe" class="nav-icon h-[18px] w-[18px]"></i>
+                                        Customization
+                                    </span>
+                                    <i data-lucide="chevron-right" class="nav-chevron"></i>
+                                </button>
+
+                                <div class="acc-wrap">
+                                    <div class="sub-menu">
+                                        
+                                                                                    <a href="http://127.0.0.1:8000/admin/merchandising"
+                                                class="sub-item ">
+                                                <i data-lucide="layout-grid" class="h-4 w-4"></i>
+                                                Merchandising
+                                            </a>
+                                        
+                                        
+                                                                                    <a href="http://127.0.0.1:8000/admin/storefront-sections"
+                                                class="sub-item ">
+                                                <i data-lucide="blocks" class="h-4 w-4"></i>
+                                                Homepage Sections
+                                            </a>
+                                        
+                                        
+                                                                                    <a href="http://127.0.0.1:8000/admin/pages"
+                                                class="sub-item ">
+                                                <i data-lucide="files" class="h-4 w-4"></i>
+                                                Custom Pages
+                                            </a>
+                                                                            </div>
+                                </div>
+                            </div>
+                                            
+                                            <div class="nav-section-label">Team Management</div>
+
+                        
+                                                    <a href="http://127.0.0.1:8000/admin/hrm/dashboard"
+                                class="nav-item ">
+                                <span class="flex items-center gap-3">
+                                    <i data-lucide="building-2" class="nav-icon h-[18px] w-[18px]"></i>
+                                    HRM Dashboard
+                                </span>
+                            </a>
+                        
+                        
+                                                                                    <a href="http://127.0.0.1:8000/admin/hrm/employees"
+                                    class="nav-item ">
+                                    <span class="flex items-center gap-3">
+                                        <i data-lucide="users" class="nav-icon h-[18px] w-[18px]"></i>
+                                        Employees
+                                    </span>
+                                </a>
+                            
+                                                            <a href="http://127.0.0.1:8000/admin/hrm/announcements"
+                                    class="nav-item ">
+                                    <span class="flex items-center gap-3">
+                                        <i data-lucide="megaphone" class="nav-icon h-[18px] w-[18px]"></i>
+                                        Announcements
+                                    </span>
+                                </a>
+                            
+                                                            <a href="http://127.0.0.1:8000/admin/hrm/tasks"
+                                    class="nav-item ">
+                                    <span class="flex items-center gap-3">
+                                        <i data-lucide="check-square" class="nav-icon h-[18px] w-[18px]"></i>
+                                        Tasks
+                                    </span>
+                                </a>
+                                                    
+                        
+                                                    <div class="acc-group"
+                                data-open="false">
+                                <button
+                                    class="nav-item acc-trigger ">
+                                    <span class="flex items-center gap-3">
+                                        <i data-lucide="clock" class="nav-icon h-[18px] w-[18px]"></i> Time &
+                                        Attendance
+                                    </span>
+                                    <i data-lucide="chevron-right" class="nav-chevron"></i>
+                                </button>
+                                <div class="acc-wrap">
+                                    <div class="sub-menu">
+                                                                                    <a href="http://127.0.0.1:8000/admin/hrm/attendance/today"
+                                                class="sub-item ">
+                                                <i data-lucide="calendar-check" class="h-4 w-4"></i> Today's
+                                                Attendance
+                                            </a>
+                                                                                                                            <a href="http://127.0.0.1:8000/admin/hrm/attendance/report"
+                                                class="sub-item ">
+                                                <i data-lucide="bar-chart-3" class="h-4 w-4"></i> Attendance Report
+                                            </a>
+                                                                                                                            <a href="http://127.0.0.1:8000/admin/hrm/work-logs"
+                                                class="sub-item ">
+                                                <i data-lucide="timer" class="h-4 w-4"></i> Work Logs
+                                            </a>
+                                                                                                                            <a href="http://127.0.0.1:8000/admin/hrm/leaves"
+                                                class="sub-item ">
+                                                <i data-lucide="calendar-clock" class="h-4 w-4"></i> Leave Requests
+                                            </a>
+                                            <a href="http://127.0.0.1:8000/admin/hrm/leave-balances"
+                                                class="sub-item ">
+                                                <i data-lucide="pie-chart" class="h-4 w-4"></i> Leave Balances
+                                            </a>
+                                                                            </div>
+                                </div>
+                            </div>
+                        
+                        
+                                                    <div class="acc-group"
+                                data-open="false">
+                                <button
+                                    class="nav-item acc-trigger ">
+                                    <span class="flex items-center gap-3">
+                                        <i data-lucide="banknote" class="nav-icon h-[18px] w-[18px]"></i> Payroll
+                                    </span>
+                                    <i data-lucide="chevron-right" class="nav-chevron"></i>
+                                </button>
+                                <div class="acc-wrap">
+                                    <div class="sub-menu">
+                                                                                    <a href="http://127.0.0.1:8000/admin/hrm/salary-slips"
+                                                class="sub-item ">
+                                                <i data-lucide="file-text" class="h-4 w-4"></i> Salary Slips
+                                            </a>
+                                                                                                                            <a href="http://127.0.0.1:8000/admin/hrm/salary-components"
+                                                class="sub-item ">
+                                                <i data-lucide="list-checks" class="h-4 w-4"></i> Components
+                                            </a>
+                                                                            </div>
+                                </div>
+                            </div>
+                        
+                        
+                                                    <div class="acc-group"
+                                data-open="false">
+                                <button
+                                    class="nav-item acc-trigger ">
+                                    <span class="flex items-center gap-3">
+                                        <i data-lucide="settings-2" class="nav-icon h-[18px] w-[18px]"></i> HRM
+                                        Setup
+                                    </span>
+                                    <i data-lucide="chevron-right" class="nav-chevron"></i>
+                                </button>
+                                <div class="acc-wrap">
+                                    <div class="sub-menu">
+                                                                                    <a href="http://127.0.0.1:8000/admin/hrm/departments"
+                                                class="sub-item ">
+                                                <i data-lucide="building-2" class="h-4 w-4"></i> Departments
+                                            </a>
+                                                                                                                            <a href="http://127.0.0.1:8000/admin/hrm/designations"
+                                                class="sub-item ">
+                                                <i data-lucide="id-card" class="h-4 w-4"></i> Designations
+                                            </a>
+                                                                                                                            <a href="http://127.0.0.1:8000/admin/hrm/shifts"
+                                                class="sub-item ">
+                                                <i data-lucide="clock-8" class="h-4 w-4"></i> Shifts
+                                            </a>
+                                                                                                                            <a href="http://127.0.0.1:8000/admin/hrm/holidays"
+                                                class="sub-item ">
+                                                <i data-lucide="calendar-days" class="h-4 w-4"></i> Holidays
+                                            </a>
+                                                                                                                            
+                                            <a href="http://127.0.0.1:8000/admin/hrm/leave-types"
+                                                class="sub-item ">
+                                                <i data-lucide="layers" class="h-4 w-4"></i> Leave Types
+                                            </a>
+                                                                                                                            <a href="http://127.0.0.1:8000/admin/hrm/attendance-rules"
+                                                class="sub-item ">
+                                                <i data-lucide="check-square" class="h-4 w-4"></i> Attendance Rules
+                                            </a>
+                                                                                                                            <a href="http://127.0.0.1:8000/admin/hrm/office-locations"
+                                                class="sub-item ">
+                                                <i data-lucide="map-pin" class="h-4 w-4"></i> Office Locations
+                                            </a>
+                                                                            </div>
+                                </div>
+                            </div>
+                                            
+                                            <div class="nav-section-label">System</div>
+
+                                                    <div class="acc-group" data-open="false">
+                                <button
+                                    class="nav-item acc-trigger ">
+                                    <span class="flex items-center gap-3">
+                                        <i data-lucide="users" class="nav-icon h-[18px] w-[18px]"></i> User
+                                        Management
+                                    </span>
+                                    <i data-lucide="chevron-right" class="nav-chevron"></i>
+                                </button>
+
+                                <div class="acc-wrap">
+                                    <div class="sub-menu">
+                                        
+                                                                                    <a href="http://127.0.0.1:8000/admin/roles"
+                                                class="sub-item ">
+                                                <i data-lucide="shield-check" class="h-4 w-4"></i>
+                                                Roles & Permissions
+                                            </a>
+                                        
+                                        
+                                                                                    <a href="http://127.0.0.1:8000/admin/users"
+                                                class="sub-item ">
+                                                <i data-lucide="user" class="h-4 w-4"></i>
+                                                Users
+                                            </a>
+                                                                            </div>
+                                </div>
+                            </div>
+                        
+                        
+                                                    <a href="http://127.0.0.1:8000/admin/stores"
+                                class="nav-item ">
+                                <span class="flex items-center gap-3">
+                                    <i data-lucide="store" class="nav-icon h-[18px] w-[18px]"></i>
+                                    Stores / Outlets
+                                </span>
+                            </a>
+                        
+                                                    <a href="http://127.0.0.1:8000/admin/payment-methods"
+                                class="nav-item ">
+                                <span class="flex items-center gap-3">
+                                    <i data-lucide="credit-card" class="nav-icon h-[18px] w-[18px]"></i>
+                                    Payment Methods
+                                </span>
+                            </a>
+                        
+                                                    <a href="http://127.0.0.1:8000/admin/settings"
+                                class="nav-item ">
+                                <span class="flex items-center gap-3">
+                                    <i data-lucide="settings" class="nav-icon h-[18px] w-[18px]"></i>
+                                    Settings
+                                </span>
+                            </a>
+                        
+                        <a href="http://127.0.0.1:8000/admin/help-center"
+                            class="nav-item ">
+                            <span class="flex items-center gap-3"><i data-lucide="help-circle"
+                                    class="nav-icon h-[18px] w-[18px]"></i> Help
+                                Center</span>
+                        </a>
+
+                                                    <a href="http://alpha.127.0.0.1:8000" target="_blank" data-no-spa class="nav-item">
+                                <span class="flex items-center gap-3">
+                                    <i data-lucide="external-link" class="nav-icon h-[18px] w-[18px]"></i>
+                                    Visit Site
+                                </span>
+                            </a>
+                                                            </nav>
+
+                                    <div class="subscription-box flex-shrink-0 px-3 py-3">
+                        <div class="rounded-xl border border-[#fce4d6] bg-[#fff4ed] p-3.5 text-center">
+                                                            <p class="text-[11px] font-semibold text-gray-600">Expires:
+                                    02 Sep, 2027</p>
+                                <p class="mt-0.5 text-sm font-bold text-[#e06623]">365 days left</p>
+                                                    </div>
+                    </div>
+                            </aside>
+
+            
+            <div class="relative flex min-w-0 flex-1 flex-col overflow-hidden">
+                <header
+                    class="sticky top-0 z-30 flex h-[60px] items-center justify-between border-b border-gray-100 bg-white px-5">
+                    
+                    <div class="flex min-w-0 flex-1 items-center gap-3">
+                        <button id="hamburger-btn" onclick="toggleSidebar()"
+                            class="flex h-9 w-9 flex-col items-center justify-center gap-[5px] rounded-lg transition-colors hover:bg-gray-100 focus:outline-none lg:hidden"
+                            aria-label="Toggle menu">
+                            <span class="hb-line"></span>
+                            <span class="hb-line"></span>
+                            <span class="hb-line"></span>
+                        </button>
+                        
+                        <button onclick="toggleDesktopSidebar()"
+                            class="hidden h-9 w-9 items-center justify-center rounded-lg text-gray-500 transition-colors hover:bg-gray-100 hover:text-gray-800 lg:flex">
+                            <i data-lucide="menu" class="h-5 w-5"></i>
+                        </button>
+                        <div id="page-header-title" class="hidden sm:block">    <h1 class="text-xs font-bold tracking-widest text-gray-400 uppercase sm:text-sm">Dashboard</h1>
+</div>
+                        
+                        <h1 id="page-header-title-mobile" data-app-suffix="Plantiq"
+                            class="min-w-0 flex-1 truncate text-sm font-bold text-gray-900 sm:hidden"></h1>
+                    </div>
+
+                    
+                    <div class="ml-auto flex flex-shrink-0 items-center gap-2 sm:gap-4">
+                        
+                        
+                                                    <div
+                                class="hidden items-center gap-2 rounded-lg border border-gray-100 bg-gray-50 px-3 py-1.5 text-sm font-semibold text-gray-600 sm:flex">
+                                <svg class="h-4 w-4 text-gray-400"
+xmlns="http://www.w3.org/2000/svg"
+viewBox="0 0 24 24"
+fill="none"
+stroke="currentColor"
+stroke-width="2"
+stroke-linecap="round"
+stroke-linejoin="round"
+class="w-3 h-3 sm:w-[15px] sm:h-[15px] text-gray-400"
+>
+<path d="M3 9l1-5h16l1 5" />
+<path d="M5 9v11h14V9" />
+<path d="M9 20V12h6v8" />
+</svg>
+                                <span>Alpha Nursery Main Store</span>
+                            </div>
+                        
+                        
+                        <div x-data="notificationBell()" @click.outside="open = false"
+                            class="relative flex items-center">
+                            
+                            <button @click="open = !open" type="button"
+                                class="relative flex h-9 w-9 items-center justify-center rounded-full text-gray-500 transition-colors hover:bg-gray-100 hover:text-gray-800 focus:outline-none">
+                                <svg class="h-[18px] w-[18px]" 
+  xmlns="http://www.w3.org/2000/svg" 
+  viewBox="0 0 24 24" 
+  fill="none" 
+  stroke="currentColor" 
+  stroke-width="2" 
+  stroke-linecap="round" 
+  stroke-linejoin="round" 
+  class="w-[18px] h-[18px]"
+>
+  <path d="M6 8a6 6 0 0 1 12 0c0 7 3 9 3 9H3s3-2 3-9" />
+  <path d="M10.3 21a1.94 1.94 0 0 0 3.4 0" />
+</svg>
+
+                                
+                                <span x-show="unreadCount > 0" x-cloak class="absolute -top-1 -right-1 flex h-4 w-4">
+                                    <span
+                                        class="absolute inline-flex h-full w-full animate-ping rounded-full bg-red-400 opacity-75"></span>
+                                    <span x-text="unreadCount > 9 ? '9+' : unreadCount"
+                                        class="relative inline-flex h-4 w-4 items-center justify-center rounded-full border border-white bg-red-500 text-[9px] font-bold text-white"></span>
+                                </span>
+                            </button>
+
+                            
+                            <div x-cloak x-show="open" x-transition:enter="transition ease-out duration-150"
+                                x-transition:enter-start="opacity-0 translate-y-1 scale-95"
+                                x-transition:enter-end="opacity-100 translate-y-0 scale-100"
+                                x-transition:leave="transition ease-in duration-100"
+                                x-transition:leave-start="opacity-100 translate-y-0 scale-100"
+                                x-transition:leave-end="opacity-0 translate-y-1 scale-95"
+                                class="absolute top-full right-0 z-50 mt-2.5 w-72 origin-top-right overflow-hidden rounded-xl border border-gray-100 bg-white shadow-xl">
+                                
+                                <div
+                                    class="flex items-center justify-between border-b border-gray-100 bg-gray-50/50 px-4 py-3">
+                                    <h3 class="text-[11px] font-black tracking-wider text-gray-500 uppercase">
+                                        Notifications
+                                    </h3>
+                                    <span x-show="unreadCount > 0" x-cloak
+                                        class="bg-brand-50 text-brand-600 border-brand-100 rounded-full border px-2 py-0.5 text-[9px] font-bold"
+                                        x-text="unreadCount + ' New'"></span>
+                                </div>
+
+                                
+                                <div id="notif-list" class="nav-scroll max-h-[320px] overflow-y-auto">
+                                    
+                                    <template x-for="item in notifications" :key="item.id">
+                                        <a href="javascript:void(0)" @click="markAsRead(item.id, item.link)"
+                                            class="block border-b border-gray-50 px-4 py-3 transition-colors hover:bg-gray-50">
+                                            <div class="flex gap-3">
+                                                
+                                                <div class="flex h-8 w-8 flex-shrink-0 items-center justify-center rounded-lg"
+                                                    :class="`bg-${item.color}-50`" :data-lucide-icon="item.icon"
+                                                    :data-lucide-color="item.color">
+                                                    <div x-ignore
+                                                        class="notif-icon-cell flex h-full w-full items-center justify-center">
+                                                        <i class="h-4 w-4"></i>
+                                                    </div>
+                                                </div>
+
+                                                <div class="min-w-0">
+                                                    <p class="truncate text-[12px] leading-snug font-semibold text-gray-800"
+                                                        x-text="item.title"></p>
+                                                    <p class="mt-0.5 line-clamp-2 text-[11px] leading-relaxed text-gray-500"
+                                                        x-text="item.message"></p>
+                                                    <p
+                                                        class="mt-1.5 flex items-center gap-1 text-[9px] font-medium text-gray-400">
+                                                        <svg class="h-3 w-3" 
+  xmlns="http://www.w3.org/2000/svg" 
+  viewBox="0 0 24 24" 
+  fill="none" 
+  stroke="currentColor" 
+  stroke-width="2" 
+  stroke-linecap="round" 
+  stroke-linejoin="round" 
+  class="w-3 h-3"
+>
+  <circle cx="12" cy="12" r="10" />
+  <polyline points="12 6 12 12 16 14" />
+</svg>
+                                                        <span x-text="item.time"></span>
+                                                    </p>
+                                                </div>
+                                            </div>
+                                        </a>
+                                    </template>
+
+                                    
+                                    <div x-show="notifications.length === 0" x-cloak class="py-10 text-center">
+                                        <div
+                                            class="mx-auto mb-2 flex h-10 w-10 items-center justify-center rounded-full bg-gray-50">
+                                            <svg class="h-5 w-5 text-gray-300" 
+  xmlns="http://www.w3.org/2000/svg" 
+  viewBox="0 0 24 24" 
+  fill="none" 
+  stroke="currentColor" 
+  stroke-width="2" 
+  stroke-linecap="round" 
+  stroke-linejoin="round" 
+  class="w-5 h-5 text-gray-300"
+>
+  <circle cx="12" cy="12" r="10" />
+  <path d="m9 12 2 2 4-4" />
+</svg>
+                                        </div>
+                                        <p class="text-[11px] font-bold tracking-widest text-gray-400 uppercase">All
+                                            caught up!</p>
+                                    </div>
+                                </div>
+
+                                <a href="http://127.0.0.1:8000/admin/notifications" @click="open = false"
+                                    class="block border-t border-gray-100 bg-gray-50/50 px-4 py-2.5 text-center transition-colors hover:bg-gray-100">
+                                    <span class="text-[11px] font-bold text-gray-600">View All History</span>
+                                </a>
+                            </div>
+                        </div>
+
+                        
+                        <div x-data="{ open: false }" class="relative">
+                            <button @click="open = !open" @click.away="open = false"
+                                class="group flex items-center focus:outline-none">
+                                <div class="relative flex h-9 w-9 items-center justify-center rounded-full text-sm font-bold text-white shadow-sm ring-2 ring-transparent transition-all duration-200 select-none group-hover:ring-[#82c43c]/30"
+                                    style="background: var(--brand-600)">
+                                    A
+                                    <span
+                                        class="absolute right-0 bottom-0 h-2.5 w-2.5 rounded-full border-2 border-white bg-[#4ade80]"></span>
+                                </div>
+                            </button>
+                            <div x-cloak x-show="open" x-transition:enter="transition ease-out duration-150"
+                                x-transition:enter-start="opacity-0 translate-y-1 scale-95"
+                                x-transition:enter-end="opacity-100 translate-y-0 scale-100"
+                                x-transition:leave="transition ease-in duration-100"
+                                x-transition:leave-start="opacity-100 translate-y-0 scale-100"
+                                x-transition:leave-end="opacity-0 translate-y-1 scale-95"
+                                class="absolute right-0 z-50 mt-2.5 w-56 origin-top-right overflow-hidden rounded-xl border border-gray-100 bg-white shadow-xl">
+                                <div
+                                    class="flex items-center gap-3 border-b border-gray-100 bg-gray-50/60 px-4 py-3.5">
+                                    <div class="flex h-9 w-9 flex-shrink-0 items-center justify-center rounded-full text-sm font-bold text-white select-none"
+                                        style="background: var(--brand-600)">
+                                        A
+                                    </div>
+                                    <div class="min-w-0">
+                                        <p class="truncate text-sm font-bold text-gray-900">
+                                            Alpha Admin</p>
+                                        <p class="text-xs font-medium text-gray-500">
+                                            
+                                                                                            Company Admin
+                                                                                    </p>
+                                    </div>
+                                </div>
+                                <div class="py-1.5">
+                                    <form method="POST" action="http://127.0.0.1:8000/logout">
+                                        <input type="hidden" name="_token" value="17R3ByzXZlzEKCAiJXjMxyPmFVht6dBjARNDJriI" autocomplete="off">                                        <button type="submit"
+                                            class="flex w-full items-center gap-3 px-4 py-2.5 text-sm font-semibold text-[#ef4444] transition-colors hover:bg-red-50">
+                                            <i data-lucide="power" class="h-4 w-4"></i> Log Out
+                                        </button>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </header>
+
+                <main id="page-content" class="flex flex-1 flex-col overflow-x-hidden overflow-y-auto p-5">
+                        <div class="pb-10" x-data="homeLauncher()">
+        
+                    <div
+    x-data="aiChatbot()"
+   
+    id="ai-chatbot-root"
+    class="fixed bottom-4 right-4 sm:bottom-5 sm:right-5 z-[9990] flex flex-col items-end gap-3"
+    style="font-family: inherit;"
+>
+    
+    <div
+        x-show="open"
+        x-cloak
+        x-transition:enter="transition ease-out duration-200"
+        x-transition:enter-start="opacity-0 translate-y-4 scale-95"
+        x-transition:enter-end="opacity-100 translate-y-0 scale-100"
+        x-transition:leave="transition ease-in duration-150"
+        x-transition:leave-start="opacity-100 translate-y-0 scale-100"
+        x-transition:leave-end="opacity-0 translate-y-4 scale-95"
+        class="relative bg-white rounded-2xl shadow-2xl border border-gray-100 flex flex-col overflow-hidden w-[calc(100vw-2rem)] sm:w-[380px] h-[calc(100dvh-7rem)] sm:h-[550px] max-h-[800px]"
+    >
+        
+        <div class="flex items-center justify-between px-4 py-3 sm:py-3.5 border-b border-gray-100 flex-shrink-0"
+             style="background: var(--brand-600);">
+            <div class="flex items-center gap-2.5 sm:gap-3">
+                <div class="w-8 h-8 sm:w-9 sm:h-9 flex items-center justify-center">
+                    <svg id="Layer_1" xmlns="http://www.w3.org/2000/svg" version="1.1" viewBox="0 0 191.7 146.7">
+                        <!-- Generator: Adobe Illustrator 30.4.0, SVG Export Plug-In . SVG Version: 2.1.4 Build 226)  -->
+                        <g>
+                            <path d="M168.7,55.6c-.7-3.6-1.8-7.2-3.1-10.5-7.9-18.9-26.6-32.1-48.4-32.1h-42.6c-29,0-52.4,23.5-52.4,52.4v24.9c0,29,23.5,52.4,52.4,52.4h42.6c19.4,0,36.4-10.5,45.4-26.2,2.1-3.6,3.7-7.4,4.9-11.5,1.4-4.7,2.1-9.6,2.1-14.7v-24.9c0-3.4-.3-6.7-.9-9.8ZM158.3,87.7c0,16.2-13.1,29.3-29.3,29.3H63.6c-16.2,0-29.3-13.1-29.3-29.3v-7.2c0-16.2,13.1-29.3,29.3-29.3h65.4c16.2,0,29.3,13.1,29.3,29.3v7.2Z" fill="none" stroke="#fff" stroke-miterlimit="10" stroke-width="4.8"/>
+                            <path d="M58.3,89.3c0-5.7,4.7-10.4,10.4-10.4s10.4,4.7,10.4,10.4" fill="none" stroke="#fff" stroke-linecap="round" stroke-linejoin="round" stroke-width="5.8"/>
+                            <path d="M113,89.3c0-5.7,4.7-10.4,10.4-10.4s10.4,4.7,10.4,10.4" fill="none" stroke="#fff" stroke-linecap="round" stroke-linejoin="round" stroke-width="5.8"/>
+                            <path d="M187.4,80.5c0,12.9-5.9,23.6-13.5,25.3-.7.1-1.4.2-2.1.2-1.5,0-3-.4-4.4-1,1.4-4.7,2.1-9.6,2.1-14.7v-24.9c0-3.4-.3-6.7-.9-9.8,1-.4,2.1-.5,3.2-.5s1.4,0,2.1.2c7.6,1.7,13.5,12.4,13.5,25.3Z" fill="none" stroke="#fff" stroke-miterlimit="10" stroke-width="4.8"/>
+                            <path d="M4.3,80.5c0,12.9,5.9,23.6,13.5,25.3.7.1,1.4.2,2.1.2,1.5,0,3-.4,4.4-1-1.4-4.7-2.1-9.6-2.1-14.7v-24.9c0-3.4.3-6.7.9-9.8-1-.4-2.1-.5-3.2-.5s-1.4,0-2.1.2c-7.6,1.7-13.5,12.4-13.5,25.3Z" fill="none" stroke="#fff" stroke-miterlimit="10" stroke-width="4.8"/>
+                        </g>
+                        <path d="M117.3,13h-42.9c.8-5.1,5.2-9,10.6-9h21.8c5.3,0,9.8,3.9,10.6,9Z" fill="none" stroke="#fff" stroke-miterlimit="10" stroke-width="4.8"/>
+                    </svg>
+                </div>
+                <div>
+                    <p class="text-white text-sm sm:text-base font-bold leading-none">Plantiq AI</p>
+                    <p class="text-white/80 text-[10px] sm:text-xs mt-0.5 sm:mt-1">Ask me anything about your business</p>
+                </div>
+            </div>
+            <div class="flex items-center gap-1 sm:gap-1.5">
+                
+                <button @click="toggleHistory()" title="Chat history"
+                    class="w-7 h-7 sm:w-8 sm:h-8 rounded-lg flex items-center justify-center text-white/80 hover:text-white hover:bg-white/10 transition-colors">
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M3 12a9 9 0 1 0 9-9 9.75 9.75 0 0 0-6.74 2.74L3 8"></path>
+                        <path d="M3 3v5h5"></path><path d="M12 7v5l3 2"></path>
+                    </svg>
+                </button>
+                <button @click="newChat()" title="New chat"
+                    class="w-7 h-7 sm:w-8 sm:h-8 rounded-lg flex items-center justify-center text-white/80 hover:text-white hover:bg-white/10 transition-colors">
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                        <line x1="12" y1="5" x2="12" y2="19"></line><line x1="5" y1="12" x2="19" y2="12"></line>
+                    </svg>
+                </button>
+                <button @click="open = false" title="Close"
+                    class="w-7 h-7 sm:w-8 sm:h-8 rounded-lg flex items-center justify-center text-white/80 hover:text-white hover:bg-white/10 transition-colors">
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                        <line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line>
+                    </svg>
+                </button>
+            </div>
+        </div>
+
+        
+        <div x-show="showHistory" x-cloak
+             x-transition:enter="transition ease-out duration-150"
+             x-transition:enter-start="opacity-0" x-transition:enter-end="opacity-100"
+             class="absolute inset-0 top-[57px] sm:top-[61px] z-20 bg-white flex flex-col">
+            <div class="flex items-center justify-between px-4 py-2.5 border-b border-gray-100 flex-shrink-0">
+                <span class="text-xs font-bold text-gray-500 uppercase tracking-wider">Recent chats</span>
+                <button @click="showHistory = false" class="text-gray-400 hover:text-gray-700 text-sm">Done</button>
+            </div>
+            <div class="flex-1 overflow-y-auto p-2 space-y-1">
+                <p x-show="!historyLoading && conversations.length === 0" class="text-center text-xs text-gray-400 py-8">No conversations yet.</p>
+                <template x-for="c in conversations" :key="c.id">
+                    <div class="group flex items-center gap-2 rounded-lg hover:bg-gray-50 px-2.5 py-2 cursor-pointer"
+                         @click="loadConversation(c.id)">
+                        <svg class="w-4 h-4 text-gray-300 flex-shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path>
+                        </svg>
+                        <span class="flex-1 text-[13px] text-gray-700 truncate" x-text="c.title || 'Untitled chat'"></span>
+                        <button @click.stop="deleteConversation(c.id)"
+                                class="opacity-0 group-hover:opacity-100 text-gray-300 hover:text-red-500 transition-opacity flex-shrink-0">
+                            <svg class="w-3.5 h-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round">
+                                <path d="M3 6h18M8 6V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2m2 0v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6"></path>
+                            </svg>
+                        </button>
+                    </div>
+                </template>
+            </div>
+        </div>
+
+        
+        <div class="flex items-center gap-2 px-4 py-2 border-b border-gray-100 bg-gray-50/80 flex-shrink-0 overflow-x-auto no-scrollbar flex-nowrap">
+            <span class="text-[10px] font-bold text-gray-400 uppercase tracking-wider select-none flex-shrink-0">Lang:</span>
+            <template x-for="opt in [{code:'en',label:'EN'},{code:'hi',label:'हिंदी'},{code:'gu',label:'ગુજ'},{code:'hinglish',label:'Hinglish'}]" :key="opt.code">
+                <button
+                    @click="setLanguage(opt.code)"
+                    :class="language === opt.code ? 'text-white border-transparent font-bold' : 'bg-white text-gray-600 border-gray-200 hover:bg-gray-100 hover:text-gray-900'"
+                    :style="language === opt.code ? 'background: var(--brand-600);' : ''"
+                    class="text-[11px] px-2.5 py-1 rounded-lg border transition-all flex-shrink-0 whitespace-nowrap shadow-sm cursor-pointer"
+                    x-text="opt.label"
+                ></button>
+            </template>
+        </div>
+
+        
+        <div x-show="messages.length === 0" class="px-3 sm:px-4 pt-3 sm:pt-4 flex flex-wrap gap-1.5 sm:gap-2">
+            <template x-for="q in quickPrompts" :key="q">
+                <button @click="sendQuick(q)"
+                    class="text-[11px] sm:text-xs font-medium px-2.5 py-1.5 sm:px-3 sm:py-2 rounded-lg border border-gray-200 bg-gray-50 text-gray-600 hover:bg-gray-100 hover:border-gray-300 transition-colors">
+                    <span x-text="q"></span>
+                </button>
+            </template>
+        </div>
+
+        
+        <div id="ai-chat-messages" class="flex-1 overflow-y-auto overscroll-contain px-3 py-3 sm:px-4 sm:py-4 space-y-3 sm:space-y-4" style="scroll-behavior: smooth;">
+
+            
+            <div x-show="messages.length === 0" class="flex flex-col items-center justify-center h-full text-center px-4 pb-8">
+                
+                <p class="text-sm sm:text-base font-bold text-gray-700">Hi! I'm your Plantiq AI assistant.</p>
+                <p class="text-xs sm:text-sm text-gray-400 mt-1 sm:mt-1.5 max-w-[200px] sm:max-w-[240px]">Get instant help with your business operations, insights, and daily tasks.</p>
+            </div>
+
+            
+            <template x-for="(msg, i) in messages" :key="i">
+                <div :class="msg.role === 'user' ? 'flex justify-end' : 'flex justify-start'">
+                    
+                    <div 
+                        x-show="msg.role === 'assistant'"
+                        class="w-6 h-6 sm:w-9 sm:h-9 rounded-full flex-shrink-0 flex items-center justify-center mr-2 sm:mr-2.5 mt-0.5"
+                        style="background: var(--brand-600);"
+                    >
+                        <svg 
+                            xmlns="http://www.w3.org/2000/svg"
+                            viewBox="0 0 200 200"
+                            class="w-3.5 h-3.5 sm:w-5 sm:h-5"
+                            fill="none"
+                        >
+                            <path d="M184.2,80.5c-.7-.2-1.5-.2-2.2-.2-1.2,0-2.3.2-3.4.6-.7-3.9-1.9-7.7-3.4-11.3-8.5-20.3-28.6-34.6-52-34.6-.9-5.5-5.6-9.7-11.4-9.7h-23.5c-5.8,0-10.5,4.2-11.4,9.7-28.2,0-51.3,18.8-55.4,45.9,0-.3,0-.2,0,0-1.1-.4-2.3-.6-3.4-.6s-1.5,0-2.2.2c-8.2,1.8-14.5,13.3-14.5,27.3s6.3,25.5,14.5,27.3c.7.2,1.5.2,2.2.2,1.6,0,3.2-.4,4.7-1.1,0-.1,0-.3-.1-.4,6.7,23.7,28.5,41,54.4,41h46c21,0,39.2-11.4,49-28.3,2.2-3.8,4-8,5.3-12.4.2-.6.4-1.3.5-1.9-.2.6-.3,1.3-.5,1.9,1.5.7,3.1,1.1,4.7,1.1s1.5,0,2.2-.2c8.2-1.8,14.5-13.3,14.5-27.3s-6.3-25.5-14.5-27.3ZM167.3,115.5c0,17.4-14.1,31.5-31.6,31.5h-70.5c-17.4,0-31.5-14.1-31.5-31.5v-7.8c0-17.4,14.1-31.5,31.5-31.5h70.5c17.4,0,31.6,14.1,31.6,31.5v7.8ZM70.7,99.5c-9.7,0-17.7,7.9-17.7,17.7s2.9,6.5,6.5,6.5,6.5-2.9,6.5-6.5,2.1-4.7,4.7-4.7,4.8,2.1,4.8,4.7,2.9,6.5,6.5,6.5,6.5-2.9,6.5-6.5c0-9.7-7.9-17.7-17.7-17.7ZM129.7,99.5c-9.7,0-17.7,7.9-17.7,17.7s2.9,6.5,6.5,6.5,6.5-2.9,6.5-6.5,2.1-4.7,4.7-4.7,4.7,2.1,4.7,4.7,2.9,6.5,6.5,6.5,6.5-2.9,6.5-6.5c0-9.7-7.9-17.7-17.7-17.7Z" 
+                                fill="#fff"
+                            />
+                        </svg>
+                    </div>
+
+                    <div
+                        :class="msg.role === 'user'
+                            ? 'bg-brand-600 text-white rounded-2xl rounded-tr-sm px-3.5 py-2.5 sm:px-4 sm:py-3 max-w-[85%] sm:max-w-[80%]'
+                            : 'bg-gray-100 text-gray-800 rounded-2xl rounded-tl-sm px-3.5 py-2.5 sm:px-4 sm:py-3 max-w-[85%] sm:max-w-[85%]'"
+                        style="word-break: break-word; font-size: 13px; line-height: 1.55;"
+                        x-html="formatMessage(msg.content)"
+                    ></div>
+                </div>
+            </template>
+
+            
+            <div x-show="loading" class="flex justify-start">
+                <div class="w-6 h-6 sm:w-7 sm:h-7 rounded-full flex-shrink-0 flex items-center justify-center mr-2 sm:mr-2.5" style="background: var(--brand-600);">
+                    <svg 
+                            xmlns="http://www.w3.org/2000/svg"
+                            viewBox="0 0 200 200"
+                            class="w-3.5 h-3.5 sm:w-5 sm:h-5"
+                            fill="none"
+                        >
+                            <path d="M184.2,80.5c-.7-.2-1.5-.2-2.2-.2-1.2,0-2.3.2-3.4.6-.7-3.9-1.9-7.7-3.4-11.3-8.5-20.3-28.6-34.6-52-34.6-.9-5.5-5.6-9.7-11.4-9.7h-23.5c-5.8,0-10.5,4.2-11.4,9.7-28.2,0-51.3,18.8-55.4,45.9,0-.3,0-.2,0,0-1.1-.4-2.3-.6-3.4-.6s-1.5,0-2.2.2c-8.2,1.8-14.5,13.3-14.5,27.3s6.3,25.5,14.5,27.3c.7.2,1.5.2,2.2.2,1.6,0,3.2-.4,4.7-1.1,0-.1,0-.3-.1-.4,6.7,23.7,28.5,41,54.4,41h46c21,0,39.2-11.4,49-28.3,2.2-3.8,4-8,5.3-12.4.2-.6.4-1.3.5-1.9-.2.6-.3,1.3-.5,1.9,1.5.7,3.1,1.1,4.7,1.1s1.5,0,2.2-.2c8.2-1.8,14.5-13.3,14.5-27.3s-6.3-25.5-14.5-27.3ZM167.3,115.5c0,17.4-14.1,31.5-31.6,31.5h-70.5c-17.4,0-31.5-14.1-31.5-31.5v-7.8c0-17.4,14.1-31.5,31.5-31.5h70.5c17.4,0,31.6,14.1,31.6,31.5v7.8ZM70.7,99.5c-9.7,0-17.7,7.9-17.7,17.7s2.9,6.5,6.5,6.5,6.5-2.9,6.5-6.5,2.1-4.7,4.7-4.7,4.8,2.1,4.8,4.7,2.9,6.5,6.5,6.5,6.5-2.9,6.5-6.5c0-9.7-7.9-17.7-17.7-17.7ZM129.7,99.5c-9.7,0-17.7,7.9-17.7,17.7s2.9,6.5,6.5,6.5,6.5-2.9,6.5-6.5,2.1-4.7,4.7-4.7,4.7,2.1,4.7,4.7,2.9,6.5,6.5,6.5,6.5-2.9,6.5-6.5c0-9.7-7.9-17.7-17.7-17.7Z" 
+                                fill="#fff"
+                            />
+                        </svg>
+                </div>
+                <div class="bg-gray-100 rounded-2xl rounded-tl-sm px-4 py-3 flex items-center gap-1.5 sm:gap-2">
+                    <span class="w-1.5 h-1.5 sm:w-2 sm:h-2 bg-gray-400 rounded-full animate-bounce" style="animation-delay: 0ms;"></span>
+                    <span class="w-1.5 h-1.5 sm:w-2 sm:h-2 bg-gray-400 rounded-full animate-bounce" style="animation-delay: 150ms;"></span>
+                    <span class="w-1.5 h-1.5 sm:w-2 sm:h-2 bg-gray-400 rounded-full animate-bounce" style="animation-delay: 300ms;"></span>
+                </div>
+            </div>
+        </div>
+
+        
+        <div class="px-3 pb-3 pt-2 sm:px-4 sm:pb-4 sm:pt-3 border-t border-gray-100 flex-shrink-0 bg-white">
+            <div class="flex items-end gap-2 bg-gray-50 rounded-xl border border-gray-200 px-3 py-2 sm:px-3 sm:py-2.5 focus-within:border-brand-500 focus-within:ring-1 focus-within:ring-brand-500/20 transition-all"
+                 style="--brand-500: var(--brand-600)">
+                <textarea
+                    x-ref="input"
+                    x-model="inputText"
+                    @keydown.enter="if (!$event.isComposing && !$event.shiftKey) { $event.preventDefault(); sendMessage(); }"
+                    @input="autoResize($refs.input)"
+                    placeholder="Ask about your business.."
+                    rows="1"
+                    :disabled="loading"
+                    class="flex-1 bg-transparent text-[13px] sm:text-sm text-gray-800 placeholder-gray-400 resize-none outline-none leading-relaxed disabled:opacity-50"
+                    style="max-height: 100px; min-height: 24px;"
+                ></textarea>
+                <button @click="sendMessage()" :disabled="loading || !inputText.trim()"
+                    class="flex-shrink-0 w-8 h-8 sm:w-9 sm:h-9 rounded-lg flex items-center justify-center text-white transition-all disabled:opacity-40 disabled:cursor-not-allowed mb-0.5"
+                    style="background: var(--brand-600);">
+                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                        <line x1="22" y1="2" x2="11" y2="13"></line>
+                        <polygon points="22 2 15 22 11 13 2 9 22 2"></polygon>
+                    </svg>
+                </button>
+            </div>
+            <div class="flex items-center justify-between mt-1.5 sm:mt-2 gap-2">
+                <p class="text-[10px] sm:text-xs text-gray-400">Enter to send · Shift+Enter for new line</p>
+                <div x-show="usageLabel()" x-cloak class="flex items-center gap-1.5 flex-shrink-0" :title="usageLabel()">
+                    <div class="w-12 h-1 rounded-full bg-gray-200 overflow-hidden">
+                        <div class="h-full rounded-full transition-all"
+                             :class="usagePct() >= 90 ? 'bg-red-500' : (usagePct() >= 70 ? 'bg-amber-500' : 'bg-emerald-500')"
+                             :style="'width:' + usagePct() + '%'"></div>
+                    </div>
+                    <span class="text-[10px] text-gray-400 tabular-nums" x-text="usagePct() + '%'"></span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    
+    
+    <style>
+        @keyframes quantum-float {
+            0%, 100% { transform: translateY(0px) rotate(0deg); }
+            50% { transform: translateY(-5px) rotate(2deg); }
+        }
+        @keyframes orbit-alpha {
+            0% { transform: rotate(0deg) translateX(30px) rotate(0deg); }
+            100% { transform: rotate(360deg) translateX(30px) rotate(-360deg); }
+        }
+        @keyframes orbit-beta {
+            0% { transform: rotate(180deg) translateX(26px) rotate(-180deg); }
+            100% { transform: rotate(540deg) translateX(26px) rotate(-540deg); }
+        }
+        .animate-core-float { animation: quantum-float 4s ease-in-out infinite; }
+        .animate-node-a { animation: orbit-alpha 3.5s linear infinite; }
+        .animate-node-b { animation: orbit-beta 2.8s linear infinite; }
+    </style>
+
+    
+    <div class="relative inline-block">
+        
+        <template x-if="!open">
+            <div class="absolute inset-0 flex items-center justify-center pointer-events-none z-10">
+                <div class="absolute top-1/2 left-1/2 w-2 h-2 -mt-1 -ml-1 bg-brand-500 rounded-full brand-glow animate-node-a"></div>
+                <div class="absolute top-1/2 left-1/2 w-1.5 h-1.5 -mt-0.75 -ml-0.75 bg-brand-700 rounded-full brand-glow animate-node-b"></div>
+            </div>
+        </template>
+
+        <button @click="open = !open"
+            class="w-14 h-14 sm:w-16 sm:h-16 lg:w-[72px] lg:h-[72px] bg-transparent flex items-center justify-center transition-transform hover:scale-105 active:scale-95 relative"
+            title="AI Assistant">
+            
+            <div class="w-full h-full flex items-center justify-center">
+                
+                <div x-show="!open" class="w-12 h-12 sm:w-14 sm:h-14 lg:w-16 lg:h-16 animate-core-float">
+                    <img src="http://127.0.0.1:8000/assets/icons/chatbot.png" alt="AI" class="w-full h-full object-contain filter drop-shadow-[0_4px_12px_rgba(0,0,0,0.15)]">
+                </div>
+
+                
+                <div x-show="open" x-cloak class="w-10 h-10 rounded-full bg-slate-900 border border-white/20 flex items-center justify-center shadow-md">
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2.5">
+                        <line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line>
+                    </svg>
+                </div>
+            </div>
+
+            <span x-show="!open && hasNewReply"
+                x-cloak
+                class="absolute top-1 right-1 flex h-3.5 w-3.5">
+
+                <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-brand-500 opacity-40"></span>
+
+                <span class="relative inline-flex rounded-full h-3.5 w-3.5 bg-brand-500 border-2 border-white shadow-md"></span>
+            </span>
+            
+        </button>
+    </div>
+
+
+</div>
+
+<style>
+    /* Custom Scrollbar for Chat Messages */
+    #ai-chat-messages::-webkit-scrollbar { width: 4px; }
+    #ai-chat-messages::-webkit-scrollbar-track { background: transparent; }
+    #ai-chat-messages::-webkit-scrollbar-thumb { background: #d1d5db; border-radius: 4px; }
+    #ai-chat-messages::-webkit-scrollbar-thumb:hover { background: #9ca3af; }
+    
+    /* Ensure styles apply properly on specific mobile browsers */
+    @supports (-webkit-touch-callout: none) {
+        .h-\[calc\(100dvh-7rem\)\] {
+            height: calc(100vh - 7rem); /* Fallback for older iOS */
+            height: calc(100dvh - 7rem);
+        }
+    }
+</style>
+
+<script>
+window.aiChatbot = function () {
+    return {
+        open:           false,
+        loading:        false,
+        hasNewReply:    false,
+        messages:       [],
+        inputText:      '',
+        conversationId: null,
+        language:       localStorage.getItem('ai_chat_lang') || 'en',
+        csrfToken:      document.querySelector('meta[name="csrf-token"]')?.content ?? '',
+
+        // ── Chat history (DB-backed, per user) ──
+        showHistory:    false,
+        conversations:  [],
+        historyLoading: false,
+
+        // ── Daily token budget (for the usage meter) ──
+        usage:          { used: 0, limit: 0, remaining: null, unlimited: false },
+
+        quickPrompts: [
+            'This month expenses',
+            'How many orders today?',
+            'Low stock products',
+            'Follow-up reminders',
+            'This month purchases',
+        ],
+
+        urls: {
+            chat:          'http://127.0.0.1:8000/admin/ai-chatbot/chat',
+            usage:         'http://127.0.0.1:8000/admin/ai-chatbot/usage',
+            conversations: 'http://127.0.0.1:8000/admin/ai-chatbot/conversations',
+        },
+
+        init() {
+            this.$watch('open', val => {
+                if (val) {
+                    this.hasNewReply = false;
+                    this.fetchUsage();
+                    this.loadConversations(true);
+                }
+            });
+
+            window.addEventListener('spa:navigated', () => {
+                this.$nextTick(() => this.scrollToBottom());
+            });
+        },
+
+        headers() {
+            return {
+                'Content-Type':     'application/json',
+                'X-CSRF-TOKEN':     this.csrfToken,
+                'X-Requested-With': 'XMLHttpRequest',
+                'Accept':           'application/json',
+            };
+        },
+
+        async fetchUsage() {
+            try {
+                const res  = await fetch(this.urls.usage, { headers: this.headers() });
+                const data = await res.json();
+                if (data && data.tokens) this.usage = data.tokens;
+            } catch (e) { /* non-fatal */ }
+        },
+
+        async loadConversations(autoOpenLatest = false) {
+            this.historyLoading = true;
+            try {
+                const res  = await fetch(this.urls.conversations, { headers: this.headers() });
+                const data = await res.json();
+                this.conversations = data.conversations || [];
+
+                if (autoOpenLatest && this.messages.length === 0 && this.conversations.length > 0) {
+                    await this.loadConversation(this.conversations[0].id);
+                }
+            } catch (e) {
+                this.conversations = [];
+            }
+            this.historyLoading = false;
+        },
+
+        async loadConversation(id) {
+            this.showHistory = false;
+            this.loading     = true;
+            try {
+                const res  = await fetch(this.urls.conversations + '/' + id, { headers: this.headers() });
+                const data = await res.json();
+                if (data.success) {
+                    this.conversationId = data.conversation_id;
+                    this.messages = (data.messages || []).map(m => ({ role: m.role, content: m.content }));
+                }
+            } catch (e) { /* ignore */ }
+            this.loading = false;
+            this.$nextTick(() => this.scrollToBottom());
+        },
+
+        async deleteConversation(id) {
+            try {
+                await fetch(this.urls.conversations + '/' + id, { method: 'DELETE', headers: this.headers() });
+            } catch (e) { /* ignore */ }
+            this.conversations = this.conversations.filter(c => c.id !== id);
+            if (this.conversationId === id) this.newChat();
+        },
+
+        async toggleHistory() {
+            this.showHistory = !this.showHistory;
+            if (this.showHistory) await this.loadConversations();
+        },
+
+        newChat() {
+            this.messages       = [];
+            this.conversationId = null;
+            this.hasNewReply    = false;
+            this.showHistory    = false;
+        },
+
+        setLanguage(lang) {
+            this.language = lang;
+            localStorage.setItem('ai_chat_lang', lang);
+        },
+
+        sendQuick(text) {
+            this.inputText = text;
+            this.sendMessage();
+        },
+
+        async sendMessage() {
+            const text = this.inputText.trim();
+            if (!text || this.loading) return;
+
+            this.messages.push({ role: 'user', content: text });
+            this.inputText = '';
+            this.loading   = true;
+            this.scrollToBottom();
+
+            if (this.$refs.input) {
+                this.$refs.input.style.height = 'auto';
+            }
+
+            try {
+                const res = await fetch(this.urls.chat, {
+                    method: 'POST',
+                    headers: this.headers(),
+                    body: JSON.stringify({
+                        message:         text,
+                        language:        this.language,
+                        conversation_id: this.conversationId,
+                    }),
+                });
+
+                const data = await res.json();
+
+                this.conversationId = data.conversation_id ?? this.conversationId;
+                this.messages.push({
+                    role:    'assistant',
+                    content: data.reply || 'Sorry, something went wrong. Please try again.',
+                });
+
+                if (!this.open) this.hasNewReply = true;
+
+                this.fetchUsage();
+                this.loadConversations();
+            } catch (e) {
+                console.error('AI Chatbot network error:', e);
+                this.messages.push({ role: 'assistant', content: 'Network error. Please check your connection.' });
+            }
+
+            this.loading = false;
+            this.$nextTick(() => this.scrollToBottom());
+        },
+
+        usageLabel() {
+            if (!this.usage || this.usage.unlimited) return '';
+            if (!this.usage.limit || this.usage.limit <= 0) return '';
+            return this.usage.used.toLocaleString() + ' / ' + this.usage.limit.toLocaleString() + ' tokens today';
+        },
+
+        usagePct() {
+            if (!this.usage || this.usage.unlimited || !this.usage.limit || this.usage.limit <= 0) return 0;
+            return Math.min(100, Math.round((this.usage.used / this.usage.limit) * 100));
+        },
+
+        scrollToBottom() {
+            const el = document.getElementById('ai-chat-messages');
+            if (el) el.scrollTop = el.scrollHeight;
+        },
+
+        autoResize(el) {
+            el.style.height = 'auto';
+            el.style.height = Math.min(el.scrollHeight, 100) + 'px';
+        },
+
+        formatMessage(text) {
+            if (!text) return '';
+            return text
+                .replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;')
+                .replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>')
+                .replace(/\*(.*?)\*/g, '<em>$1</em>')
+                .replace(/`(.*?)`/g, '<code class="bg-black/10 px-1 rounded text-[11px] sm:text-xs font-mono">$1</code>')
+                .replace(/\n/g, '<br>');
+        },
+    };
+};
+</script>                
+        <div class="mb-6">
+            <div class="mb-3 flex flex-wrap items-center gap-3">
+                <span
+                    class="inline-flex items-center gap-2 rounded-full px-3 py-1 text-[10px] font-black tracking-widest text-white uppercase"
+                    style="background: var(--brand-600)">
+                    <span class="h-1.5 w-1.5 rounded-full bg-emerald-400"></span>
+                    Live · Wed 02 Sep
+                </span>
+                <span class="font-mono text-xs text-gray-400">06:11 PM</span>
+                
+                                    
+                    <span class="hidden items-center gap-1.5 text-xs font-bold text-gray-500 sm:inline-flex">
+                        <i data-lucide="store" class="h-3.5 w-3.5"></i>
+                        Alpha Nursery Main Store
+                    </span>
+
+                    <div class="relative sm:hidden" x-data="{ storeOpen: false }" @click.away="storeOpen = false">
+                        <button type="button" @click="storeOpen = !storeOpen"
+                            class="inline-flex items-center gap-1.5 rounded-full border border-gray-200 bg-white px-3 py-1 text-xs font-bold text-gray-600">
+                            <i data-lucide="store" class="h-3.5 w-3.5 text-gray-400"></i>
+                            Alpha Nursery Main Store
+                                                    </button>
+
+                                            </div>
+                            </div>
+
+            <h2 class="text-2xl font-black tracking-tight text-gray-900 sm:text-4xl">
+                <span class="text-gray-400"></span>
+                <span x-text="greeting" class="text-gray-400"></span>, Alpha
+            </h2>
+            <p class="mt-1.5 max-w-2xl text-sm font-medium text-gray-500">Everything is one keystroke away — search below,
+                or pick a category.</p>
+        </div>
+
+        
+        <div class="relative mb-4">
+            <div
+                class="flex items-center gap-3 rounded-2xl border border-gray-100 bg-white px-4 py-3 shadow-sm focus-within:border-gray-300">
+                <div class="flex h-9 w-9 shrink-0 items-center justify-center rounded-full text-white"
+                    style="background: var(--brand-600)">
+                    <i data-lucide="search" class="h-4 w-4"></i>
+                </div>
+                <input type="text" x-ref="search" x-model="query" @keydown.escape="query = ''"
+                    :placeholder="window.innerWidth < 640 ? 'Search...' : 'Jump to anything — invoices, batches, leads, attendance...'"
+                    class="w-full border-0 bg-transparent text-[15px] font-medium text-gray-800 placeholder-gray-400 outline-none" />
+                <span x-show="query" x-cloak class="shrink-0 text-xs font-bold text-gray-400"
+                    x-text="visible.length + (visible.length === 1 ? ' result' : ' results')"></span>
+                <kbd
+                    class="hidden shrink-0 rounded-lg border border-gray-200 px-2 py-1 font-mono text-[10px] font-bold text-gray-400 sm:block">Ctrl
+                    K</kbd>
+            </div>
+        </div>
+
+        
+        <div class="hide-scrollbar mb-6 flex gap-2 overflow-x-auto pb-1" x-show="!query" x-cloak>
+                            <button type="button" class="cat-pill" :class="{ 'active': tab === 'quick' }"
+                    @click="tab = 'quick'">
+                    Quick
+                    <span class="cat-count" x-text="countFor('quick')"></span>
+                </button>
+                            <button type="button" class="cat-pill" :class="{ 'active': tab === 'sales' }"
+                    @click="tab = 'sales'">
+                    Sales
+                    <span class="cat-count" x-text="countFor('sales')"></span>
+                </button>
+                            <button type="button" class="cat-pill" :class="{ 'active': tab === 'inventory' }"
+                    @click="tab = 'inventory'">
+                    Inventory
+                    <span class="cat-count" x-text="countFor('inventory')"></span>
+                </button>
+                            <button type="button" class="cat-pill" :class="{ 'active': tab === 'production' }"
+                    @click="tab = 'production'">
+                    Production
+                    <span class="cat-count" x-text="countFor('production')"></span>
+                </button>
+                            <button type="button" class="cat-pill" :class="{ 'active': tab === 'crm' }"
+                    @click="tab = 'crm'">
+                    CRM
+                    <span class="cat-count" x-text="countFor('crm')"></span>
+                </button>
+                            <button type="button" class="cat-pill" :class="{ 'active': tab === 'contacts' }"
+                    @click="tab = 'contacts'">
+                    Contacts
+                    <span class="cat-count" x-text="countFor('contacts')"></span>
+                </button>
+                            <button type="button" class="cat-pill" :class="{ 'active': tab === 'hrm' }"
+                    @click="tab = 'hrm'">
+                    HRM
+                    <span class="cat-count" x-text="countFor('hrm')"></span>
+                </button>
+                            <button type="button" class="cat-pill" :class="{ 'active': tab === 'web' }"
+                    @click="tab = 'web'">
+                    Web
+                    <span class="cat-count" x-text="countFor('web')"></span>
+                </button>
+                            <button type="button" class="cat-pill" :class="{ 'active': tab === 'system' }"
+                    @click="tab = 'system'">
+                    System
+                    <span class="cat-count" x-text="countFor('system')"></span>
+                </button>
+                            <button type="button" class="cat-pill" :class="{ 'active': tab === 'tools' }"
+                    @click="tab = 'tools'">
+                    Tools
+                    <span class="cat-count" x-text="countFor('tools')"></span>
+                </button>
+                    </div>
+
+        
+        <div class="grid grid-cols-2 gap-2.5 sm:gap-3 lg:grid-cols-3 xl:grid-cols-4">
+            <template x-for="action in visible" :key="action.url">
+                <a :href="action.url" class="action-tile">
+                    <span class="tile-icon">
+                        <i :data-lucide="action.icon" class="h-4 w-4"></i>
+                    </span>
+                    <span class="min-w-0">
+                        <span class="block truncate text-[13.5px] font-bold text-gray-800" x-text="action.label"></span>
+                        <span class="hidden text-[11px] font-semibold text-gray-400 capitalize sm:block"
+                            x-text="action.category"></span>
+                    </span>
+                </a>
+            </template>
+        </div>
+
+        
+        <div x-show="visible.length === 0" x-cloak class="py-20 text-center">
+            <div class="mx-auto mb-3 flex h-14 w-14 items-center justify-center rounded-2xl bg-gray-100">
+                <i data-lucide="search-x" class="h-7 w-7 text-gray-300"></i>
+            </div>
+            <p class="font-semibold text-gray-500">Nothing matches that</p>
+            <p class="mt-1 text-sm text-gray-400">Try a different word, or browse a category.</p>
+        </div>
+    </div>
+                    <footer class="mt-auto py-6 text-center text-xs text-gray-400">
+                        &copy; 2026 Powered by <span
+                            class="font-semibold text-gray-600">Qlinkon</span>
+                    </footer>
+                </main>
+            </div>
+
+            
+            <div x-data="announcementPopup()" x-cloak>
+                <template x-if="announcements.length > 0">
+                    <div class="fixed inset-0 z-[9999] flex items-center justify-center p-4 sm:p-6"
+                        @keydown.escape.window="dismissCurrent()">
+                        
+                        <div class="absolute inset-0 bg-gray-900/60 backdrop-blur-sm transition-opacity"
+                            :class="currentAnnouncement?.requires_acknowledgement ? '' : 'cursor-pointer'"
+                            @click="!currentAnnouncement?.requires_acknowledgement && dismissCurrent()"></div>
+                        
+                        <div class="relative flex w-full max-w-[520px] animate-[slideUp_0.3s_ease-out] flex-col overflow-hidden rounded-[24px] bg-white shadow-2xl"
+                            style="max-height: 90vh">
+                            
+                            <div
+                                class="flex shrink-0 items-center justify-between border-b border-gray-50 bg-gray-50/30 px-6 py-5">
+                                <div class="flex items-center gap-3">
+                                    
+                                    <div class="flex h-10 w-10 shrink-0 items-center justify-center rounded-full"
+                                        :style="'background:' +
+                                        (currentAnnouncement?.type_color?.text || '#4b5563') +
+                                        '15; color:' +
+                                        (currentAnnouncement?.type_color?.text || '#4b5563')">
+                                        <svg x-show="currentAnnouncement?.requires_acknowledgement" width="20"
+                                            height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                            stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                                            <circle cx="12" cy="12" r="10"></circle>
+                                            <line x1="12" y1="8" x2="12" y2="12">
+                                            </line>
+                                            <line x1="12" y1="16" x2="12.01" y2="16">
+                                            </line>
+                                        </svg>
+                                        <svg x-show="!currentAnnouncement?.requires_acknowledgement" width="20"
+                                            height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                            stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                                            <path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"></path>
+                                            <path d="M13.73 21a2 2 0 0 1-3.46 0"></path>
+                                        </svg>
+                                    </div>
+                                    
+                                    <div class="mt-0.5 flex flex-wrap items-center gap-2">
+                                        <span class="text-[11px] font-black tracking-widest uppercase"
+                                            :style="'color:' + (currentAnnouncement?.type_color?.text || '#4b5563')"
+                                            x-text="currentAnnouncement?.type_label || 'GENERAL'"></span>
+                                        <span x-show="currentAnnouncement?.requires_acknowledgement"
+                                            class="rounded-md bg-[#fef2f2] px-2 py-0.5 text-[10px] font-black tracking-widest text-[#dc2626] uppercase">
+                                            Mandatory
+                                        </span>
+                                    </div>
+                                </div>
+                                
+                                <div x-show="announcements.length > 1"
+                                    class="shrink-0 rounded-full bg-gray-100 px-2.5 py-1 text-[11px] font-bold text-gray-400">
+                                    <span x-text="currentIndex + 1"></span> /
+                                    <span x-text="announcements.length"></span>
+                                </div>
+                            </div>
+                            
+                            <div class="no-scrollbar flex-1 overflow-y-auto px-6 py-6">
+                                
+                                <div class="mb-5">
+                                    <h2 class="mb-1 text-[20px] leading-tight font-black tracking-tight text-gray-900"
+                                        x-text="currentAnnouncement?.title"></h2>
+                                    <p class="text-[13px] font-medium text-gray-400"
+                                        x-text="currentAnnouncement?.published_at"></p>
+                                </div>
+                                
+                                <div class="prose prose-sm sm:prose-base max-w-none leading-relaxed text-[#4b5563]"
+                                    x-html="currentAnnouncement?.content"></div>
+                                
+                                <template x-if="currentAnnouncement?.attachment_url">
+                                    <a :href="currentAnnouncement.attachment_url" target="_blank"
+                                        class="group mt-5 inline-flex items-center gap-2 rounded-xl border border-gray-200 bg-gray-50 px-4 py-2.5 text-sm font-bold text-gray-700 transition-all hover:bg-gray-100 hover:text-gray-900">
+                                        <svg class="text-gray-400 transition-colors group-hover:text-gray-600"
+                                            width="16" height="16" viewBox="0 0 24 24" fill="none"
+                                            stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                                            stroke-linejoin="round">
+                                            <path
+                                                d="M21.44 11.05l-9.19 9.19a6 6 0 0 1-8.49-8.49l9.19-9.19a4 4 0 0 1 5.66 5.66l-9.2 9.19a2 2 0 0 1-2.83-2.83l8.49-8.48">
+                                            </path>
+                                        </svg>
+                                        <span x-text="currentAnnouncement.attachment_name || 'View Attachment'"></span>
+                                    </a>
+                                </template>
+                                
+                                <template
+                                    x-if="
+                                            currentAnnouncement?.priority === 'critical' ||
+                                            currentAnnouncement?.priority === 'high'
+                                        ">
+                                    <div class="mt-6 flex items-center gap-2.5 rounded-xl p-3.5 text-sm font-bold"
+                                        :class="currentAnnouncement.priority === 'critical' ?
+                                            'bg-[#fdf2f2] text-[#d32f2f]' :
+                                            'bg-amber-50 text-amber-700'">
+                                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none"
+                                            stroke="currentColor" stroke-width="2.5" stroke-linecap="round"
+                                            stroke-linejoin="round">
+                                            <path
+                                                d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z">
+                                            </path>
+                                            <line x1="12" y1="9" x2="12" y2="13">
+                                            </line>
+                                            <line x1="12" y1="17" x2="12.01" y2="17">
+                                            </line>
+                                        </svg>
+                                        <span
+                                            x-text="
+                                                    currentAnnouncement.priority === 'critical'
+                                                        ? 'Critical Priority'
+                                                        : 'High Priority'
+                                                "></span>
+                                    </div>
+                                </template>
+                            </div>
+                            
+                            <div class="flex shrink-0 items-center gap-3 border-t border-gray-100 bg-white px-6 py-5"
+                                :class="currentAnnouncement?.requires_acknowledgement ?
+                                    'justify-center' :
+                                    'justify-end'">
+                                
+                                <button x-show="!currentAnnouncement?.requires_acknowledgement"
+                                    @click="dismissCurrent()" :disabled="processing"
+                                    class="rounded-[14px] px-5 py-3 text-[14px] font-bold text-gray-500 transition-colors hover:bg-gray-100 hover:text-gray-800 active:scale-95 disabled:opacity-50">
+                                    Dismiss
+                                </button>
+                                
+                                <button @click="acknowledgeCurrent()" :disabled="processing"
+                                    class="flex items-center justify-center rounded-[14px] px-8 py-3.5 text-[15px] font-extrabold text-white transition-all active:scale-95"
+                                    :class="processing
+                                        ?
+                                        'bg-gray-400 cursor-wait shadow-none' :
+                                        currentAnnouncement?.requires_acknowledgement ?
+                                        'bg-[#d32f2f] hover:bg-[#b71c1c] w-[260px]' :
+                                        'bg-brand-600 hover:bg-brand-700 w-auto'">
+                                    <span x-show="!processing"
+                                        x-text="
+                                                currentAnnouncement?.requires_acknowledgement
+                                                    ? 'I Accept & Acknowledge'
+                                                    : 'Got It'
+                                            "></span>
+                                    <span x-show="processing" class="flex items-center gap-2">
+                                        <svg class="h-4 w-4 animate-spin" viewBox="0 0 24 24" fill="none">
+                                            <circle cx="12" cy="12" r="10" stroke="currentColor"
+                                                stroke-width="4" opacity="0.25"></circle>
+                                            <path fill="currentColor" d="M4 12a8 8 0 018-8v4a4 4 0 00-4 4H4z"></path>
+                                        </svg>
+                                        Processing...
+                                    </span>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </template>
+            </div>
+
+            <script>
+                /* ── Lucide global init ── */
+
+                window.initIcons = function(scope) {
+                    if (typeof lucide === "undefined") {
+                        setTimeout(() => window.initIcons(scope), 80);
+                        return;
+                    }
+                    lucide.createIcons(
+                        scope ? {
+                            nodes: scope.querySelectorAll("[data-lucide]"),
+                        } :
+                        undefined,
+                    );
+                };
+                window.addEventListener("pageshow", function(event) {
+                    if (event.persisted) {
+                        if (typeof Swal !== "undefined") {
+                            Swal.close();
+                        }
+                    }
+                });
+                document.addEventListener("visibilitychange", function() {
+                    if (document.visibilityState === "visible") {
+                        if (typeof Swal !== "undefined") {
+                            Swal.close();
+                        }
+                    }
+                });
+
+                /* ── Page cover fade ── */
+                (function() {
+                    const cover = document.getElementById("page-cover");
+                    document.addEventListener("DOMContentLoaded", () => {
+                        window.initIcons();
+                        requestAnimationFrame(() => {
+                            cover.style.opacity = "0";
+                            setTimeout(() => cover.remove(), 240);
+                        });
+                    });
+                })();
+
+                /* ── Accordion — functions exposed globally for navigate() ── */
+                (function() {
+                    const groups = Array.from(document.querySelectorAll(".acc-group"));
+
+                    window.accOpen = function(group, instant) {
+                        const wrap = group.querySelector(".acc-wrap");
+                        const chevron = group.querySelector(".nav-chevron");
+                        const trigger = group.querySelector(".acc-trigger");
+                        if (instant) {
+                            wrap.style.transition = "none";
+                            wrap.style.maxHeight = wrap.scrollHeight + "px";
+                            wrap.style.opacity = "1";
+                            requestAnimationFrame(() =>
+                                requestAnimationFrame(() => {
+                                    wrap.style.transition = "";
+                                }),
+                            );
+                        } else {
+                            wrap.style.maxHeight = wrap.scrollHeight + "px";
+                            wrap.style.opacity = "1";
+                        }
+                        chevron?.classList.add("rotated");
+                        trigger?.classList.add("acc-open");
+                        group._open = true;
+                    };
+
+                    window.accClose = function(group) {
+                        const wrap = group.querySelector(".acc-wrap");
+                        const chevron = group.querySelector(".nav-chevron");
+                        const trigger = group.querySelector(".acc-trigger");
+                        wrap.style.maxHeight = "0";
+                        wrap.style.opacity = "0";
+                        chevron?.classList.remove("rotated");
+                        trigger?.classList.remove("acc-open");
+                        group._open = false;
+                    };
+
+                    groups.forEach((group) => {
+                        const shouldOpen = group.dataset.open === "true";
+                        group._open = shouldOpen;
+                        shouldOpen ? window.accOpen(group, true) : window.accClose(group);
+
+                        group.querySelector(".acc-trigger")?.addEventListener("click", () => {
+                            const isOpen = group._open;
+                            groups.forEach((g) => {
+                                if (g !== group && g._open) window.accClose(g);
+                            });
+                            isOpen ? window.accClose(group) : window.accOpen(group, false);
+                        });
+                    });
+                })();
+
+                /* ── Sidebar (mobile) ── */
+                function toggleSidebar() {
+                    document.getElementById("main-sidebar").classList.contains("sidebar-open") ?
+                        closeSidebar() :
+                        openSidebar();
+                }
+
+                function openSidebar() {
+                    document.getElementById("main-sidebar").classList.add("sidebar-open");
+                    document.getElementById("sidebar-overlay").classList.add("active");
+                    document.getElementById("hamburger-btn").classList.add("is-open");
+                    document.body.style.overflow = "hidden";
+                }
+
+                function closeSidebar() {
+                    document.getElementById("main-sidebar").classList.remove("sidebar-open");
+                    document.getElementById("sidebar-overlay").classList.remove("active");
+                    document.getElementById("hamburger-btn")?.classList.remove("is-open");
+                    document.body.style.overflow = "";
+                }
+                window.addEventListener("resize", () => {
+                    if (window.innerWidth >= 1024) closeSidebar();
+                });
+
+                /* ══════════════════════════════════════════════════════
+                           MOBILE HEADER TITLE — compact <title>-derived text shown
+                           only below the sm breakpoint. Runs on initial load AND
+                           after every SPA navigation (title swap), so every page
+                           gets a working mobile title with zero per-page changes.
+                        ══════════════════════════════════════════════════════ */
+                function updateMobileHeaderTitle() {
+                    const el = document.getElementById("page-header-title-mobile");
+                    if (!el) return;
+                    const suffix = el.dataset.appSuffix || "";
+                    const suffixPattern = new RegExp(
+                        "\\s*[—-]\\s*" + suffix.replace(/[.*+?^${}()|[\]\\]/g, "\\$&") + "\\s*$",
+                        "i",
+                    );
+                    el.textContent = document.title.replace(suffixPattern, "").trim();
+                }
+                updateMobileHeaderTitle();
+
+                /* ══════════════════════════════════════════════════════
+                           SPA NAVIGATION ENGINE
+                        ══════════════════════════════════════════════════════ */
+                (function() {
+                    const getContent = () => document.getElementById("page-content");
+                    const getHeaderTitle = () => document.getElementById("page-header-title");
+                    const progress = document.getElementById("nav-progress");
+
+                    function progressStart() {
+                        progress.style.opacity = "1";
+                        progress.style.width = "40%";
+                    }
+
+                    function progressDone() {
+                        progress.style.width = "100%";
+                        setTimeout(() => {
+                            progress.style.opacity = "0";
+                            setTimeout(() => {
+                                progress.style.width = "0%";
+                            }, 300);
+                        }, 200);
+                    }
+
+                    /* Re-execute <script> tags inside swapped content */
+                    function rerunScripts(container) {
+                        container.querySelectorAll("script").forEach((old) => {
+                            const s = document.createElement("script");
+                            [...old.attributes].forEach((a) => s.setAttribute(a.name, a.value));
+                            s.textContent = old.textContent;
+                            old.replaceWith(s);
+                        });
+                    }
+
+                    /* Update sidebar active state after navigation */
+                    function updateActiveNav(url) {
+                        const path = new URL(url, location.origin).pathname;
+
+                        document
+                            .querySelectorAll("#sidebar-nav .active")
+                            .forEach((el) => el.classList.remove("active"));
+                        document
+                            .querySelectorAll("#sidebar-nav .acc-open")
+                            .forEach((el) => el.classList.remove("acc-open"));
+                        document.querySelectorAll(".acc-group").forEach((g) => window.accClose(g));
+
+                        document.querySelectorAll("#sidebar-nav a[href]").forEach((el) => {
+                            try {
+                                const href = el.getAttribute("href");
+                                if (!href || href === "#") return;
+                                const elPath = new URL(el.href, location.origin).pathname;
+
+                                // ── Exact match OR prefix match (covers create/edit/show) ──
+                                // path.startsWith(elPath + '/') ensures /admin/products matches
+                                // /admin/products/create but NOT /admin/products-returns
+                                let isMatch =
+                                    path === elPath || (elPath.length > 7 && path.startsWith(elPath + "/"));
+
+                                // Some screens have no nav item of their own and belong under
+                                // another one — Categories under Products, the Production Map
+                                // under Layout. Blade resolves that by route name, which this
+                                // path-based pass cannot see, so the link declares those paths
+                                // itself via data-owns.
+                                if (!isMatch && el.dataset.owns) {
+                                    isMatch = el.dataset.owns
+                                        .split(",")
+                                        .map((p) => p.trim())
+                                        .filter(Boolean)
+                                        .some((p) => path === p || path.startsWith(p + "/"));
+                                }
+
+                                if (!isMatch) return;
+
+                                el.classList.add("active");
+                                const group = el.closest(".acc-group");
+                                if (group) {
+                                    window.accOpen(group, false);
+                                    group.querySelector(".acc-trigger")?.classList.add("acc-open");
+                                }
+                            } catch (_) {}
+                        });
+                    }
+
+                    /* Core navigate function */
+                    let isNavigating = false;
+
+                    async function navigate(url, pushState = true) {
+                        if (isNavigating) return;
+                        isNavigating = true;
+
+                        document.body.classList.remove("modal-open");
+                        document.body.style.overflow = "";
+
+                        try {
+                            const t = new URL(url, location.origin);
+                            if (t.origin !== location.origin) {
+                                isNavigating = false;
+                                return;
+                            }
+                        } catch (_) {
+                            isNavigating = false;
+                            return;
+                        }
+
+                        progressStart();
+
+                        try {
+                            const res = await fetch(url, {
+                                headers: {
+                                    "X-Requested-With": "XMLHttpRequest",
+                                    "X-CSRF-TOKEN": document.querySelector('meta[name="csrf-token"]')?.content ??
+                                        "",
+                                },
+                            });
+
+                            progress.style.width = "70%";
+
+                            if (res.redirected && res.url.includes("login")) {
+                                isNavigating = false;
+                                location.href = res.url;
+                                return;
+                            }
+
+                            if (!res.ok) throw new Error("HTTP " + res.status);
+
+                            const html = await res.text();
+                            const parser = new DOMParser();
+                            const doc = parser.parseFromString(html, "text/html");
+
+                            const newContent = doc.getElementById("ajax-main-content");
+                            const newHeader = doc.getElementById("ajax-header-content");
+                            const newTitle = doc.querySelector("title");
+
+                            if (!newContent) {
+                                isNavigating = false;
+                                location.href = url;
+                                return;
+                            }
+
+                            // 1. Handle Dynamic Page Styles (From your code)
+                            const ajaxStylesEl = doc.getElementById("ajax-styles");
+                            if (ajaxStylesEl) {
+                                const rawStyles = ajaxStylesEl.textContent.trim();
+                                if (rawStyles) {
+                                    let hash = 0;
+                                    for (let i = 0; i < rawStyles.length; i++) {
+                                        hash = (hash << 5) - hash + rawStyles.charCodeAt(i);
+                                        hash |= 0;
+                                    }
+                                    const key = "dyn-style-" + Math.abs(hash);
+                                    if (!document.getElementById(key)) {
+                                        document
+                                            .querySelectorAll("style[data-spa-page]")
+                                            .forEach((s) => s.remove());
+                                        const tmp = document.createElement("div");
+                                        tmp.innerHTML = rawStyles;
+                                        tmp.querySelectorAll("style").forEach((s) => {
+                                            s.id = key;
+                                            s.setAttribute("data-spa-page", "1");
+                                            document.head.appendChild(s);
+                                        });
+                                    }
+                                }
+                            }
+
+                            const pageRoot = getContent();
+
+                            // 2. Destroy Old Alpine State (Robust version)
+                            if (window.Alpine) {
+                                pageRoot.querySelectorAll("[x-data]").forEach((el) => {
+                                    try {
+                                        if (typeof window.Alpine.destroyTree === "function") {
+                                            window.Alpine.destroyTree(el);
+                                        } else if (el._x_dataStack) {
+                                            delete el._x_dataStack;
+                                            delete el._x_effects;
+                                        }
+                                    } catch (_) {}
+                                });
+                            }
+
+                            // 3. Swap Content & Meta
+                            pageRoot.innerHTML = newContent.innerHTML;
+
+                            if (newHeader && getHeaderTitle()) {
+                                getHeaderTitle().innerHTML = newHeader.innerHTML;
+                            }
+                            if (newTitle) document.title = newTitle.textContent;
+                            updateMobileHeaderTitle();
+                            if (pushState)
+                                history.pushState({
+                                        url,
+                                    },
+                                    "",
+                                    url,
+                                );
+
+                            pageRoot.scrollTop = 0;
+
+                            // 4. App-Specific UI Updates
+                            updateActiveNav(url);
+                            if (window.innerWidth < 1024 && typeof closeSidebar === "function") {
+                                closeSidebar();
+                            }
+
+                            // 5. Re-run scripts and initialize icons
+                            rerunScripts(pageRoot);
+                            window.initIcons(pageRoot);
+
+                            // 6. The Paint & Initialize Sequence (The Future-Friendly Fix)
+                            requestAnimationFrame(() => {
+                                requestAnimationFrame(() => {
+                                    try {
+                                        if (window.Alpine && typeof window.Alpine.initTree === "function") {
+                                            window.Alpine.initTree(pageRoot);
+                                        }
+
+                                        window.initIcons(pageRoot); // Catch any icons Alpine just generated
+
+                                        window.dispatchEvent(
+                                            new CustomEvent("spa:navigated", {
+                                                detail: {
+                                                    url,
+                                                },
+                                            }),
+                                        );
+                                        document.dispatchEvent(
+                                            new CustomEvent("spa:page-loaded", {
+                                                detail: {
+                                                    url,
+                                                },
+                                            }),
+                                        );
+                                    } catch (initErr) {
+                                        console.error("[spa:alpine-init] Component init error:", initErr);
+                                    } finally {
+                                        progressDone();
+                                        isNavigating = false;
+                                    }
+                                });
+                            });
+                        } catch (err) {
+                            console.error("[navigate] error:", err);
+                            progressDone();
+                            isNavigating = false;
+                            location.href = url; // Hard fallback on crash
+                        }
+                    }
+
+                    /* Intercept sidebar link clicks */
+                    document.addEventListener("click", function(e) {
+                        const link = e.target.closest("a[href]");
+                        if (!link) return;
+
+                        // Let browser handle modifier clicks (Ctrl+click, Cmd+click = new tab)
+                        if (e.ctrlKey || e.metaKey || e.shiftKey || e.altKey) return;
+                        if (e.button !== 0) return;
+
+                        const href = link.getAttribute("href");
+
+                        if (!href || href === "#") return;
+                        if (link.target === "_blank") return;
+                        if (href.startsWith("mailto:")) return;
+                        if (href.startsWith("tel:")) return;
+                        if (href.startsWith("javascript:")) return;
+
+                        try {
+                            const url = new URL(href, location.origin);
+                            if (url.origin !== location.origin) return;
+                        } catch (_) {
+                            return;
+                        }
+
+                        if (link.hasAttribute("data-no-spa")) return;
+
+                        e.preventDefault();
+                        navigate(link.href);
+                    });
+
+                    /* Browser back / forward */
+                    // window.addEventListener('popstate', function(e) {
+                    //     // Whether or not state exists, navigate to current URL
+                    //     const url = e.state?.url || location.href;
+                    //     navigate(url, false);
+                    // });
+                    // Browser back / forward
+                    window.addEventListener("popstate", function(e) {
+                        const url = e.state?.url || location.href;
+
+                        // If navigating back to/from the POS (or any standalone page),
+                        // do a hard reload instead of AJAX — they don't share the admin layout
+                        const standaloneRoutes = ["/admin/pos"];
+                        const currentIsSpa = !standaloneRoutes.some((r) => location.pathname.startsWith(r));
+                        const targetIsSpa = !standaloneRoutes.some((r) =>
+                            new URL(url, location.origin).pathname.startsWith(r),
+                        );
+
+                        if (!currentIsSpa || !targetIsSpa) {
+                            location.href = url;
+                            return;
+                        }
+
+                        navigate(url, false);
+                    });
+                    /* Set initial history state */
+                    history.replaceState({
+                            url: location.href,
+                        },
+                        "",
+                        location.href,
+                    );
+
+                    /* Safety net: bfcache restore can freeze isNavigating (or
+                       any future stuck flag) at whatever value it held when
+                       the tab was last navigated away — self-heal so back/
+                       forward from a hard-reloaded page never leaves clicks
+                       silently dead. */
+                    window.addEventListener("pageshow", function(e) {
+                        if (e.persisted) {
+                            isNavigating = false;
+                            progressDone();
+                        }
+                    });
+                })();
+            </script>
+
+            <script src="http://127.0.0.1:8000/assets/js/swal.js"></script>
+
+            <audio id="qlinkon-notif-audio" src="http://127.0.0.1:8000/assets/audio/notification.mp3" preload="auto"
+                style="display: none"></audio>
+            <script>
+                window.announcementPopup = function() {
+                    return {
+                        announcements: [],
+                        currentIndex: 0,
+                        processing: false,
+                        loaded: false,
+
+                        get currentAnnouncement() {
+                            return this.announcements[this.currentIndex] || null;
+                        },
+
+                        async init() {
+                            // Small delay to not block initial page paint
+                            await new Promise((r) => setTimeout(r, 800));
+                            await this.fetchPending();
+
+                            // Re-check after every SPA navigation
+                            window.addEventListener("spa:navigated", () => {
+                                // Only re-fetch if popup is not currently showing
+                                if (this.announcements.length === 0) {
+                                    this.fetchPending();
+                                }
+                            });
+
+                            // Re-check when attendance scanner requests it
+                            window.addEventListener("announcements:recheck", () => {
+                                this.fetchPending();
+                            });
+                        },
+
+                        async fetchPending() {
+                            try {
+                                const res = await fetch("http://127.0.0.1:8000/admin/announcements-popup/pending", {
+                                    headers: {
+                                        Accept: "application/json",
+                                        "X-Requested-With": "XMLHttpRequest",
+                                    },
+                                });
+                                if (!res.ok) return;
+                                const json = await res.json();
+                                this.announcements = json.data || [];
+
+                                // Mark first one as read
+                                if (this.announcements.length > 0) {
+                                    this.markRead(this.announcements[0].id);
+                                }
+                            } catch (e) {
+                                console.error("Announcement popup fetch failed:", e);
+                            }
+                        },
+
+                        async markRead(id) {
+                            try {
+                                await fetch(`http://127.0.0.1:8000/admin/announcements-popup/${id}/read`, {
+                                    method: "POST",
+                                    headers: {
+                                        "X-CSRF-TOKEN": document.querySelector('meta[name="csrf-token"]').content,
+                                        Accept: "application/json",
+                                        "X-Requested-With": "XMLHttpRequest",
+                                    },
+                                });
+                            } catch (_) {}
+                        },
+
+                        async acknowledgeCurrent() {
+                            const ann = this.currentAnnouncement;
+                            if (!ann || this.processing) return;
+
+                            this.processing = true;
+                            try {
+                                const endpoint = ann.requires_acknowledgement ? "acknowledge" : "dismiss";
+                                const res = await fetch(`http://127.0.0.1:8000/admin/announcements-popup/${ann.id}/${endpoint}`, {
+                                    method: "POST",
+                                    headers: {
+                                        "X-CSRF-TOKEN": document.querySelector('meta[name="csrf-token"]').content,
+                                        Accept: "application/json",
+                                        "X-Requested-With": "XMLHttpRequest",
+                                    },
+                                });
+
+                                if (res.ok) {
+                                    this.removeCurrentAndAdvance();
+                                }
+                            } catch (e) {
+                                console.error("Acknowledge failed:", e);
+                            } finally {
+                                this.processing = false;
+                            }
+                        },
+
+                        async dismissCurrent() {
+                            const ann = this.currentAnnouncement;
+                            if (!ann || this.processing) return;
+
+                            // Mandatory cannot be dismissed
+                            if (ann.requires_acknowledgement) return;
+
+                            this.processing = true;
+                            try {
+                                const res = await fetch(`http://127.0.0.1:8000/admin/announcements-popup/${ann.id}/dismiss`, {
+                                    method: "POST",
+                                    headers: {
+                                        "X-CSRF-TOKEN": document.querySelector('meta[name="csrf-token"]').content,
+                                        Accept: "application/json",
+                                        "X-Requested-With": "XMLHttpRequest",
+                                    },
+                                });
+
+                                if (res.ok) {
+                                    this.removeCurrentAndAdvance();
+                                }
+                            } catch (e) {
+                                console.error("Dismiss failed:", e);
+                            } finally {
+                                this.processing = false;
+                            }
+                        },
+
+                        removeCurrentAndAdvance() {
+                            this.announcements.splice(this.currentIndex, 1);
+
+                            if (this.announcements.length === 0) {
+                                this.currentIndex = 0;
+                                return;
+                            }
+
+                            if (this.currentIndex >= this.announcements.length) {
+                                this.currentIndex = 0;
+                            }
+
+                            // Mark next one as read
+                            if (this.announcements[this.currentIndex]) {
+                                this.markRead(this.announcements[this.currentIndex].id);
+                            }
+                        },
+                    };
+                };
+                /* ── Desktop Minimized Sidebar ── */
+                function toggleDesktopSidebar() {
+                    const sidebar = document.getElementById("main-sidebar");
+                    sidebar.classList.toggle("is-minimized");
+                    // Save preference so it remembers across page loads
+                    localStorage.setItem("sidebar_minimized", sidebar.classList.contains("is-minimized"));
+                }
+
+                // Restore state immediately on load
+                if (localStorage.getItem("sidebar_minimized") === "true") {
+                    document.getElementById("main-sidebar").classList.add("is-minimized");
+                }
+            </script>
+
+            <style>
+                @keyframes slideUp {
+                    from {
+                        opacity: 0;
+                        transform: translateY(30px) scale(0.97);
+                    }
+
+                    to {
+                        opacity: 1;
+                        transform: translateY(0) scale(1);
+                    }
+                }
+            </style>
+
+            <script>
+                window.notificationBell = function() {
+                    return {
+                        open: false,
+                        _timer: null,
+                        _inFlight: false,
+                        _visibilityHandler: null,
+                        audioPlayer: null,
+                        unreadCount: 0,
+                        notifications: [],
+                        latestId: null,
+
+                        init() {
+                            this._renderIcons();
+                            this.audioPlayer = new Audio("http://127.0.0.1:8000/assets/audio/notification.mp3");
+                            this.audioPlayer.preload = "auto";
+
+                            // 🌟 ROOT FIX: Browser Autoplay Policy Audio Unlocker
+                            // This silently plays/pauses the audio on the user's first click,
+                            // permanently unlocking the audio object for your background interval.
+                            const unlockAudio = () => {
+                                this.audioPlayer.volume = 0; // Mute it so they don't hear a blip
+                                let playPromise = this.audioPlayer.play();
+
+                                if (playPromise !== undefined) {
+                                    playPromise
+                                        .then(() => {
+                                            this.audioPlayer.pause();
+                                            this.audioPlayer.currentTime = 0;
+                                            this.audioPlayer.volume = 1; // Unmute for the real notifications
+                                        })
+                                        .catch(() => {
+                                            // Silently handle exceptions if the browser is being overly strict
+                                        });
+                                }
+                            };
+
+                            // Attach to the first time the user touches the page anywhere
+                            document.addEventListener("click", unlockAudio, {
+                                once: true,
+                            });
+                            document.addEventListener("keydown", unlockAudio, {
+                                once: true,
+                            });
+                            document.addEventListener("touchstart", unlockAudio, {
+                                once: true,
+                            });
+
+                            // Defensive guard: if a previous instance of this component is
+                            // still alive on this page, kill its timer before starting a new
+                            // one. Exactly one polling loop should exist per page.
+                            if (window.__qlinkonNotifTimer) {
+                                clearTimeout(window.__qlinkonNotifTimer);
+                                window.__qlinkonNotifTimer = null;
+                            }
+
+                            // Hidden tabs must not poll. Coming back to the tab does one
+                            // immediate fetch so the bell is current, then resumes the loop.
+                            this._visibilityHandler = () => {
+                                if (document.hidden) {
+                                    this._stopPolling();
+                                } else {
+                                    this._poll().finally(() => this._scheduleNext());
+                                }
+                            };
+                            document.addEventListener("visibilitychange", this._visibilityHandler);
+
+                            this._scheduleNext();
+                        },
+
+                        // ── Timer control ────────────────────────────────────────
+                        _stopPolling() {
+                            if (this._timer) {
+                                clearTimeout(this._timer);
+                            }
+                            this._timer = null;
+                            window.__qlinkonNotifTimer = null;
+                        },
+
+                        // Self-scheduling timer: the next poll is only queued once the
+                        // previous one has fully settled, so requests can never stack up
+                        // the way a fixed setInterval allows.
+                        _scheduleNext() {
+                            this._stopPolling();
+
+                            if (document.hidden) {
+                                return;
+                            }
+
+                            this._timer = window.__qlinkonNotifTimer = setTimeout(() => {
+                                this._poll().finally(() => this._scheduleNext());
+                            }, 30_000);
+                        },
+
+                        destroy() {
+                            this._stopPolling();
+                            if (this._visibilityHandler) {
+                                document.removeEventListener("visibilitychange", this._visibilityHandler);
+                                this._visibilityHandler = null;
+                            }
+                        },
+
+                        // ── Polling ──────────────────────────────────────────────
+                        async _poll() {
+                            // In-flight guard: never allow a second request to start while
+                            // one is still open, regardless of what triggered it.
+                            if (this._inFlight) {
+                                return;
+                            }
+                            this._inFlight = true;
+
+                            try {
+                                const res = await fetch("http://127.0.0.1:8000/admin/notifications/fetch-recent", {
+                                    headers: {
+                                        "X-Requested-With": "XMLHttpRequest",
+                                        Accept: "application/json",
+                                    },
+                                });
+                                if (!res.ok) {
+                                    return;
+                                }
+                                const data = await res.json();
+
+                                const prevCount = this.unreadCount;
+                                const prevLatestId = this.latestId;
+                                const nextCount = data.count ?? 0;
+                                const nextLatestId = data.latest_id ?? null;
+
+                                // Nothing changed — skip the state assignment entirely so
+                                // Alpine does not re-render the list and Lucide does not
+                                // rebuild icons every 30 seconds for identical data.
+                                if (nextCount === prevCount && nextLatestId === prevLatestId) {
+                                    return;
+                                }
+
+                                this.notifications = data.items ?? [];
+                                this.unreadCount = nextCount;
+                                this.latestId = nextLatestId;
+
+                                if (nextLatestId && nextLatestId !== prevLatestId && nextCount > prevCount) {
+                                    this._notify(data.items?.[0]);
+                                }
+
+                                this._renderIcons();
+                            } catch (_) {
+                                /* network blip — silently ignore */
+                            } finally {
+                                this._inFlight = false;
+                            }
+                        },
+
+                        // ── New-notification alert ───────────────────────────────
+                        _notify(item) {
+                            const title = item?.title ?? "New Notification";
+                            const msg = item?.message ?? "";
+
+                            if (typeof BizAlert !== "undefined" && BizAlert.toast) {
+                                BizAlert.toast(title + (msg ? ": " + msg : ""), "info");
+                            }
+
+                            // No recipient check here on purpose. The bell only ever
+                            // holds this user's own notifications, and who receives an
+                            // event was already decided server-side by
+                            // NotificationDispatcher via Settings > Notifications.
+                            // Re-checking on the client could only ever disagree with it.
+                            const audioEl = document.getElementById("qlinkon-notif-audio");
+
+                            if (!audioEl) {
+                                return;
+                            }
+
+                            try {
+                                audioEl.currentTime = 0;
+                                audioEl.volume = 1;
+                                const playPromise = audioEl.play();
+
+                                if (playPromise !== undefined) {
+                                    // Browsers block autoplay until the page has been
+                                    // interacted with; a silent notification is fine.
+                                    playPromise.catch(() => {});
+                                }
+                            } catch (err) {
+                                // Audio is decorative — never let it break the bell.
+                            }
+                        },
+
+                        // ── Lucide icon renderer ─────────────────────────────────
+                        _renderIcons() {
+                            this.$nextTick(() => {
+                                document.querySelectorAll("#notif-list [data-lucide-icon] .notif-icon-cell i").forEach((
+                                    el) => {
+                                    const wrapper = el.closest("[data-lucide-icon]");
+                                    const iconName = wrapper?.getAttribute("data-lucide-icon") || "bell";
+                                    const color = wrapper?.getAttribute("data-lucide-color") || "blue";
+                                    el.setAttribute("data-lucide", iconName);
+                                    el.className = `w-4 h-4 text-${color}-600`;
+                                });
+
+                                if (window.lucide) {
+                                    lucide.createIcons({
+                                        nodes: document.querySelectorAll("#notif-list [data-lucide]"),
+                                    });
+                                }
+                            });
+                        },
+
+                        // ── Mark as read + navigate ──────────────────────────────
+                        async markAsRead(id, link) {
+                            try {
+                                await fetch(`/admin/notifications/${id}/read`, {
+                                    method: "POST",
+                                    headers: {
+                                        "X-CSRF-TOKEN": "17R3ByzXZlzEKCAiJXjMxyPmFVht6dBjARNDJriI",
+                                        "X-Requested-With": "XMLHttpRequest",
+                                    },
+                                });
+                            } catch (_) {
+                                /* best-effort */
+                            }
+
+                            window.location.href = link || "#";
+                        },
+                    };
+                };
+            </script>
+
+            <script>
+                /**
+                 * Alpine factory for the x-custom-select component.
+                 * Kept global (window.customSelect) — same pattern as invoiceIndex(),
+                 * purchaseIndex(), etc. — so it survives SPA page swaps and re-inits
+                 * cleanly via Alpine.initTree() without re-registering.
+                 */
+                window.customSelect = function({
+                    options = {},
+                    icons = {},
+                    initial = "",
+                    placeholder = "Select",
+                }) {
+                    return {
+                        options,
+                        icons,
+                        placeholder,
+                        value: initial,
+                        open: false,
+
+                        get optionList() {
+                            return Object.entries(this.options).map(([value, label]) => ({
+                                value,
+                                label,
+                            }));
+                        },
+
+                        get label() {
+                            return this.value === "" ?
+                                this.placeholder :
+                                (this.options[this.value] ?? this.placeholder);
+                        },
+
+                        select(val) {
+                            this.value = val;
+                            this.open = false;
+
+                            this.$nextTick(() => {
+                                if (this.$refs.nativeSelect) {
+                                    this.$refs.nativeSelect.value = val;
+                                    this.$refs.nativeSelect.dispatchEvent(
+                                        new Event("change", {
+                                            bubbles: true,
+                                        }),
+                                    );
+                                }
+                                if (typeof lucide !== "undefined") lucide.createIcons();
+                            });
+                        },
+
+                        init() {
+                            this.$nextTick(() => {
+                                if (typeof lucide !== "undefined") lucide.createIcons();
+                            });
+                        },
+                    };
+                };
+
+                /**
+                 * Focus and highlight an x-custom-select that failed validation.
+                 *
+                 * The component's own required attribute sits on a visually
+                 * hidden, aria-hidden select. Chrome refuses to focus that and
+                 * blocks the submit with a console error instead of showing
+                 * anything, so the native required path is unusable here and
+                 * the trigger button is focused directly.
+                 *
+                 * Located through the hidden select's id, which is stable —
+                 * the trigger's own id carries a random suffix.
+                 *
+                 * @param {string} fieldId  The component's name/id.
+                 * @returns {boolean} false, so callers can `return`.
+                 */
+                window.focusCustomSelect = function(fieldId) {
+                    const nativeSelect = document.getElementById(fieldId);
+                    if (!nativeSelect) return false;
+
+                    const trigger = nativeSelect.parentElement?.querySelector('button[role="combobox"]');
+                    if (!trigger) return false;
+
+                    // Classes chosen so they do not collide with the trigger's
+                    // own :class binding, which would strip them on open.
+                    const errorClasses = ["border-red-400", "ring-2", "ring-red-200"];
+                    trigger.classList.add(...errorClasses);
+
+                    trigger.scrollIntoView({
+                        behavior: "smooth",
+                        block: "center"
+                    });
+                    trigger.focus({
+                        preventScroll: true
+                    });
+
+                    // Clear on the next selection, and on blur so the field does
+                    // not stay red once the user has moved on.
+                    const clear = () => {
+                        trigger.classList.remove(...errorClasses);
+                        nativeSelect.removeEventListener("change", clear);
+                        trigger.removeEventListener("blur", clear);
+                    };
+
+                    nativeSelect.addEventListener("change", clear);
+                    trigger.addEventListener("blur", clear);
+
+                    return false;
+                };
+            </script>
+
+                <script>
+        function homeLauncher() {
+            return {
+                actions: [{"label":"POS Counter","url":"http:\/\/127.0.0.1:8000\/admin\/pos","icon":"calculator","category":"sales","quick":true,"search":"pos counter billing counter checkout sales"},{"label":"Sales Dashboard","url":"http:\/\/127.0.0.1:8000\/admin\/sales\/dashboard","icon":"trending-up","category":"sales","quick":false,"search":"sales dashboard revenue finance overview sales"},{"label":"Invoices","url":"http:\/\/127.0.0.1:8000\/admin\/invoices","icon":"file-text","category":"sales","quick":true,"search":"invoices bill tax gst sales"},{"label":"Invoice Returns","url":"http:\/\/127.0.0.1:8000\/admin\/invoice-returns","icon":"undo-2","category":"sales","quick":false,"search":"invoice returns credit note refund sales"},{"label":"Quotations","url":"http:\/\/127.0.0.1:8000\/admin\/quotations","icon":"file-signature","category":"sales","quick":false,"search":"quotations estimate proposal sales"},{"label":"Challans","url":"http:\/\/127.0.0.1:8000\/admin\/challans","icon":"truck","category":"sales","quick":false,"search":"challans delivery note sales"},{"label":"Challan Returns","url":"http:\/\/127.0.0.1:8000\/admin\/challan-returns","icon":"undo-2","category":"sales","quick":false,"search":"challan returns  sales"},{"label":"Customer Ledger","url":"http:\/\/127.0.0.1:8000\/admin\/ledger","icon":"book-open","category":"sales","quick":false,"search":"customer ledger account statement outstanding sales"},{"label":"Sales Reports","url":"http:\/\/127.0.0.1:8000\/admin\/sales\/reports","icon":"bar-chart-3","category":"sales","quick":false,"search":"sales reports analytics sales"},{"label":"Purchases","url":"http:\/\/127.0.0.1:8000\/admin\/purchases","icon":"shopping-bag","category":"sales","quick":false,"search":"purchases supplier bill sales"},{"label":"Purchase Returns","url":"http:\/\/127.0.0.1:8000\/admin\/purchase-returns","icon":"undo-2","category":"sales","quick":false,"search":"purchase returns debit note sales"},{"label":"Expenses","url":"http:\/\/127.0.0.1:8000\/admin\/expenses","icon":"wallet","category":"sales","quick":true,"search":"expenses spend cost sales"},{"label":"Orders","url":"http:\/\/127.0.0.1:8000\/admin\/orders","icon":"inbox","category":"sales","quick":false,"search":"orders inquiry enquiry sales"},{"label":"Products","url":"http:\/\/127.0.0.1:8000\/admin\/products","icon":"package","category":"inventory","quick":false,"search":"products catalog sku item inventory"},{"label":"Warehouses","url":"http:\/\/127.0.0.1:8000\/admin\/warehouses","icon":"warehouse","category":"inventory","quick":false,"search":"warehouses godown inventory"},{"label":"Stock Adjustments","url":"http:\/\/127.0.0.1:8000\/admin\/stock-adjustments","icon":"sliders","category":"inventory","quick":false,"search":"stock adjustments damage correction inventory"},{"label":"Inventory Reports","url":"http:\/\/127.0.0.1:8000\/admin\/inventory\/reports","icon":"clipboard-list","category":"inventory","quick":false,"search":"inventory reports stock valuation inventory"},{"label":"Production Dashboard","url":"http:\/\/127.0.0.1:8000\/admin\/production\/dashboard","icon":"sprout","category":"production","quick":false,"search":"production dashboard plantiq nursery production"},{"label":"Plant Batches","url":"http:\/\/127.0.0.1:8000\/admin\/production\/plant-batches","icon":"boxes","category":"production","quick":true,"search":"plant batches lot crop production"},{"label":"Harvest Lots","url":"http:\/\/127.0.0.1:8000\/admin\/production\/harvest-lots","icon":"scissors","category":"production","quick":true,"search":"harvest lots picking yield production"},{"label":"Production Plans","url":"http:\/\/127.0.0.1:8000\/admin\/production\/plans","icon":"calendar-range","category":"production","quick":false,"search":"production plans schedule production"},{"label":"Layout","url":"http:\/\/127.0.0.1:8000\/admin\/production\/layout","icon":"layout-grid","category":"production","quick":false,"search":"layout sites zones growing space production"},{"label":"Activity Templates","url":"http:\/\/127.0.0.1:8000\/admin\/production\/activity-templates","icon":"list-checks","category":"production","quick":false,"search":"activity templates task template production"},{"label":"Zone Assignments","url":"http:\/\/127.0.0.1:8000\/admin\/production\/zone-assignments","icon":"users","category":"production","quick":false,"search":"zone assignments worker allocation production"},{"label":"CRM Dashboard","url":"http:\/\/127.0.0.1:8000\/admin\/crm\/dashboard","icon":"gauge","category":"crm","quick":false,"search":"crm dashboard  crm"},{"label":"All Leads","url":"http:\/\/127.0.0.1:8000\/admin\/crm\/leads","icon":"user-plus","category":"crm","quick":true,"search":"all leads prospect enquiry crm"},{"label":"Pipelines","url":"http:\/\/127.0.0.1:8000\/admin\/crm\/pipelines","icon":"git-branch","category":"crm","quick":false,"search":"pipelines stages funnel crm"},{"label":"Lead Sources","url":"http:\/\/127.0.0.1:8000\/admin\/crm\/sources","icon":"radio","category":"crm","quick":false,"search":"lead sources  crm"},{"label":"Tags","url":"http:\/\/127.0.0.1:8000\/admin\/crm\/tags","icon":"tag","category":"crm","quick":false,"search":"tags  crm"},{"label":"Team Performance","url":"http:\/\/127.0.0.1:8000\/admin\/crm\/performance","icon":"bar-chart-3","category":"crm","quick":true,"search":"team performance employee report productivity tracking calls crm"},{"label":"Active Projects","url":"http:\/\/127.0.0.1:8000\/admin\/projects","icon":"folder-kanban","category":"crm","quick":true,"search":"active projects amc renewal crm"},{"label":"Services","url":"http:\/\/127.0.0.1:8000\/admin\/project-services","icon":"wrench","category":"crm","quick":false,"search":"services catalog price list crm"},{"label":"Renewals","url":"http:\/\/127.0.0.1:8000\/admin\/project-renewals","icon":"calendar-clock","category":"crm","quick":true,"search":"renewals expiry due amc hosting domain renew crm"},{"label":"Clients","url":"http:\/\/127.0.0.1:8000\/admin\/clients","icon":"contact","category":"contacts","quick":false,"search":"clients customer party contacts"},{"label":"Suppliers","url":"http:\/\/127.0.0.1:8000\/admin\/suppliers","icon":"factory","category":"contacts","quick":false,"search":"suppliers vendor contacts"},{"label":"HRM Dashboard","url":"http:\/\/127.0.0.1:8000\/admin\/hrm\/dashboard","icon":"gauge","category":"hrm","quick":false,"search":"hrm dashboard  hrm"},{"label":"Employees","url":"http:\/\/127.0.0.1:8000\/admin\/hrm\/employees","icon":"users","category":"hrm","quick":false,"search":"employees staff team hrm"},{"label":"Attendance Today","url":"http:\/\/127.0.0.1:8000\/admin\/hrm\/attendance\/today","icon":"clock","category":"hrm","quick":false,"search":"attendance today check in out hrm"},{"label":"Attendance Report","url":"http:\/\/127.0.0.1:8000\/admin\/hrm\/attendance\/report","icon":"bar-chart-2","category":"hrm","quick":true,"search":"attendance report muster hrm"},{"label":"Tasks","url":"http:\/\/127.0.0.1:8000\/admin\/hrm\/tasks","icon":"check-square","category":"hrm","quick":true,"search":"tasks todo assignment hrm"},{"label":"Leaves","url":"http:\/\/127.0.0.1:8000\/admin\/hrm\/leaves","icon":"calendar-off","category":"hrm","quick":false,"search":"leaves time off holiday hrm"},{"label":"Salary Slips","url":"http:\/\/127.0.0.1:8000\/admin\/hrm\/salary-slips","icon":"indian-rupee","category":"hrm","quick":false,"search":"salary slips payroll payslip hrm"},{"label":"Work Logs","url":"http:\/\/127.0.0.1:8000\/admin\/hrm\/work-logs","icon":"timer","category":"hrm","quick":false,"search":"work logs timesheet hrm"},{"label":"Announcements","url":"http:\/\/127.0.0.1:8000\/admin\/hrm\/announcements","icon":"megaphone","category":"hrm","quick":false,"search":"announcements notice hrm"},{"label":"Departments","url":"http:\/\/127.0.0.1:8000\/admin\/hrm\/departments","icon":"network","category":"hrm","quick":false,"search":"departments  hrm"},{"label":"Designations","url":"http:\/\/127.0.0.1:8000\/admin\/hrm\/designations","icon":"award","category":"hrm","quick":false,"search":"designations title role hrm"},{"label":"Shifts","url":"http:\/\/127.0.0.1:8000\/admin\/hrm\/shifts","icon":"clock-4","category":"hrm","quick":false,"search":"shifts  hrm"},{"label":"Holidays","url":"http:\/\/127.0.0.1:8000\/admin\/hrm\/holidays","icon":"palmtree","category":"hrm","quick":false,"search":"holidays  hrm"},{"label":"Storefront Builder","url":"http:\/\/127.0.0.1:8000\/admin\/storefront-builder","icon":"layout-dashboard","category":"web","quick":false,"search":"storefront builder homepage design web"},{"label":"Merchandising","url":"http:\/\/127.0.0.1:8000\/admin\/merchandising","icon":"sparkles","category":"web","quick":false,"search":"merchandising featured web"},{"label":"Sections","url":"http:\/\/127.0.0.1:8000\/admin\/storefront-sections","icon":"rows-3","category":"web","quick":false,"search":"sections  web"},{"label":"Pages","url":"http:\/\/127.0.0.1:8000\/admin\/pages","icon":"file","category":"web","quick":false,"search":"pages cms content web"},{"label":"Banners","url":"http:\/\/127.0.0.1:8000\/admin\/banners","icon":"image","category":"web","quick":false,"search":"banners slider hero web"},{"label":"Appointments","url":"http:\/\/127.0.0.1:8000\/admin\/appointments","icon":"calendar-check","category":"web","quick":false,"search":"appointments booking slot web"},{"label":"Settings","url":"http:\/\/127.0.0.1:8000\/admin\/settings","icon":"settings","category":"system","quick":true,"search":"settings configuration company system"},{"label":"Stores","url":"http:\/\/127.0.0.1:8000\/admin\/stores","icon":"store","category":"system","quick":false,"search":"stores branch outlet system"},{"label":"Users","url":"http:\/\/127.0.0.1:8000\/admin\/users","icon":"user-cog","category":"system","quick":false,"search":"users login account access system"},{"label":"Roles","url":"http:\/\/127.0.0.1:8000\/admin\/roles","icon":"shield","category":"system","quick":false,"search":"roles permission system"},{"label":"Payment Methods","url":"http:\/\/127.0.0.1:8000\/admin\/payment-methods","icon":"credit-card","category":"system","quick":false,"search":"payment methods  system"},{"label":"Notifications","url":"http:\/\/127.0.0.1:8000\/admin\/notifications","icon":"bell","category":"system","quick":false,"search":"notifications alerts system"},{"label":"Help Center","url":"http:\/\/127.0.0.1:8000\/admin\/help-center","icon":"life-buoy","category":"system","quick":false,"search":"help center support docs guide system"},{"label":"OCR Scanner","url":"http:\/\/127.0.0.1:8000\/admin\/ocr-scanner","icon":"scan-text","category":"tools","quick":false,"search":"ocr scanner scan extract document tools"},{"label":"Label Printing","url":"http:\/\/127.0.0.1:8000\/admin\/labels","icon":"tag","category":"tools","quick":false,"search":"label printing barcode sticker print tools"},{"label":"Bulk Import","url":"http:\/\/127.0.0.1:8000\/admin\/bulk-import","icon":"upload","category":"tools","quick":false,"search":"bulk import csv excel migrate tools"}],
+                query: "",
+                tab: "quick",
+                greeting: "",
+
+                init() {
+                    const hour = new Date().getHours();
+                    this.greeting = hour < 12 ? "Good morning" : hour < 17 ? "Good afternoon" : "Good evening";
+
+                    // A tenant with no quick tiles would otherwise land on an
+                    // empty screen, so open the first category that has links.
+                    if (!this.actions.some((a) => a.quick)) {
+                        this.tab = this.actions.length ? this.actions[0].category : "quick";
+                    }
+
+                    window.addEventListener("keydown", (e) => {
+                        if ((e.ctrlKey || e.metaKey) && e.key.toLowerCase() === "k") {
+                            e.preventDefault();
+                            this.$refs.search.focus();
+                        }
+                    });
+
+                    this.$watch("visible", () => this.refreshIcons());
+                    this.refreshIcons();
+                },
+
+                // Icons are rendered inside x-for, so Lucide has to re-scan
+                // whenever the visible list changes.
+                refreshIcons() {
+                    this.$nextTick(() => {
+                        if (window.lucide) lucide.createIcons();
+                    });
+                },
+
+                get visible() {
+                    const q = this.query.trim().toLowerCase();
+
+                    if (q) {
+                        return this.actions.filter((a) => a.search.includes(q));
+                    }
+
+                    if (this.tab === "quick") return this.actions.filter((a) => a.quick);
+
+                    return this.actions.filter((a) => a.category === this.tab);
+                },
+
+                countFor(category) {
+                    return category === "quick" ?
+                        this.actions.filter((a) => a.quick).length :
+                        this.actions.filter((a) => a.category === category).length;
+                },
+            };
+        }
+    </script>
+            
+            <script src="http://127.0.0.1:8000/assets/js/lucide.min.js"></script>
+            <script src="http://127.0.0.1:8000/assets/js/sweetalert2.js"></script>
+            <script src="http://127.0.0.1:8000/assets/js/number-input-guard.js"></script>
+            
+            <script src="http://127.0.0.1:8000/assets/js/helpers.js?v=1788328363"></script>
+            <script src="http://127.0.0.1:8000/assets/js/alpinejs.min.js"></script>
+    </body>
+
+    </html>

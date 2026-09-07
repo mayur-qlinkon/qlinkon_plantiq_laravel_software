@@ -1,0 +1,8 @@
+@config "../../tailwind.config.js";
+@import "tailwindcss";
+
+
+@source "../**/*.blade.php";
+@source "../**/*.js";
+
+@source "../../app/**/*.php";

@@ -1,0 +1,5 @@
+@import "tailwindcss";
+
+/* Sirf welcome.blade.php scan kare */
+@source "../views/welcome.blade.php";
+@source "../views/partials/inquiry-modal.blade.php";

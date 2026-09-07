@@ -1,0 +1,5 @@
+name,slug,category_slug,unit,product_type,description,sku,price,cost,mrp,barcode,stock_alert,warehouse_name,stock_qty
+
+
+"Empty Test",,general,pcs,sellable,"d",IMP-EMPTY,50,20,60,,5,"Main Warehouse",1
+

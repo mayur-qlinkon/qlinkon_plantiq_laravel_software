@@ -1,0 +1,196 @@
+
+   FAIL  Tests\Feature\Admin\InvoiceReturnIntegrityTest
+  ⨯ rejects return quantity greater than invoice line
+  ⨯ allows partial return and then remainder
+  ⨯ rejects second return that exceeds remaining
+  ⨯ draft return does not touch return quantity or stock
+  ⨯ confirm with restock increments return qty and adds stock
+  ⨯ confirm without restock only increments return qty
+  ⨯ confirm is idempotent and does not double count
+  ⨯ invoice cannot be updated when confirmed returns exist
+  ⨯ backfill migration restores return quantity from confirmed returns
+  ⨯ excess return exception renders friendly message
+  ────────────────────────────────────────────────────────────────────────────  
+   FAILED  Tests\Feature\Admin\InvoiceReturnIntegrityTest >…   QueryException   
+  SQLSTATE[HY000] [2002] Unknown error while connecting (Connection: mysql, Host: 127.0.0.1, Port: 3306, Database: sep_1_plantiq, SQL: select exists (select 1 from information_schema.tables where table_schema = schema() and table_name = 'migrations' and table_type in ('BASE TABLE', 'SYSTEM VERSIONED')) as `exists`)
+
+  at vendor\laravel\framework\src\Illuminate\Database\Connectors\Connector.php:67
+     63▕     protected function createPdoConnection($dsn, $username, #[\SensitiveParameter] $password, $options)
+     64▕     {
+     65▕         return version_compare(PHP_VERSION, '8.4.0', '<')
+     66▕             ? new PDO($dsn, $username, $password, $options)
+  ➜  67▕             : PDO::connect($dsn, $username, $password, $options); /** @phpstan-ignore staticMethod.notFound (PHP 8.4) */
+     68▕     }
+     69▕ 
+     70▕     /**
+     71▕      * Handle an exception that occurred during connect execution.
+
+  1   vendor\laravel\framework\src\Illuminate\Database\Connectors\Connector.php:67
+  2   vendor\laravel\framework\src\Illuminate\Database\Connectors\Connector.php:44
+
+  ────────────────────────────────────────────────────────────────────────────  
+   FAILED  Tests\Feature\Admin\InvoiceReturnIntegrityTest >…   QueryException   
+  SQLSTATE[HY000] [2002] Unknown error while connecting (Connection: mysql, Host: 127.0.0.1, Port: 3306, Database: sep_1_plantiq, SQL: select exists (select 1 from information_schema.tables where table_schema = schema() and table_name = 'migrations' and table_type in ('BASE TABLE', 'SYSTEM VERSIONED')) as `exists`)
+
+  at vendor\laravel\framework\src\Illuminate\Database\Connectors\Connector.php:67
+     63▕     protected function createPdoConnection($dsn, $username, #[\SensitiveParameter] $password, $options)
+     64▕     {
+     65▕         return version_compare(PHP_VERSION, '8.4.0', '<')
+     66▕             ? new PDO($dsn, $username, $password, $options)
+  ➜  67▕             : PDO::connect($dsn, $username, $password, $options); /** @phpstan-ignore staticMethod.notFound (PHP 8.4) */
+     68▕     }
+     69▕ 
+     70▕     /**
+     71▕      * Handle an exception that occurred during connect execution.
+
+  1   vendor\laravel\framework\src\Illuminate\Database\Connectors\Connector.php:67
+  2   vendor\laravel\framework\src\Illuminate\Database\Connectors\Connector.php:44
+
+  ────────────────────────────────────────────────────────────────────────────  
+   FAILED  Tests\Feature\Admin\InvoiceReturnIntegrityTest >…   QueryException   
+  SQLSTATE[HY000] [2002] Unknown error while connecting (Connection: mysql, Host: 127.0.0.1, Port: 3306, Database: sep_1_plantiq, SQL: select exists (select 1 from information_schema.tables where table_schema = schema() and table_name = 'migrations' and table_type in ('BASE TABLE', 'SYSTEM VERSIONED')) as `exists`)
+
+  at vendor\laravel\framework\src\Illuminate\Database\Connectors\Connector.php:67
+     63▕     protected function createPdoConnection($dsn, $username, #[\SensitiveParameter] $password, $options)
+     64▕     {
+     65▕         return version_compare(PHP_VERSION, '8.4.0', '<')
+     66▕             ? new PDO($dsn, $username, $password, $options)
+  ➜  67▕             : PDO::connect($dsn, $username, $password, $options); /** @phpstan-ignore staticMethod.notFound (PHP 8.4) */
+     68▕     }
+     69▕ 
+     70▕     /**
+     71▕      * Handle an exception that occurred during connect execution.
+
+  1   vendor\laravel\framework\src\Illuminate\Database\Connectors\Connector.php:67
+  2   vendor\laravel\framework\src\Illuminate\Database\Connectors\Connector.php:44
+
+  ────────────────────────────────────────────────────────────────────────────  
+   FAILED  Tests\Feature\Admin\InvoiceReturnIntegrityTest >…   QueryException   
+  SQLSTATE[HY000] [2002] Unknown error while connecting (Connection: mysql, Host: 127.0.0.1, Port: 3306, Database: sep_1_plantiq, SQL: select exists (select 1 from information_schema.tables where table_schema = schema() and table_name = 'migrations' and table_type in ('BASE TABLE', 'SYSTEM VERSIONED')) as `exists`)
+
+  at vendor\laravel\framework\src\Illuminate\Database\Connectors\Connector.php:67
+     63▕     protected function createPdoConnection($dsn, $username, #[\SensitiveParameter] $password, $options)
+     64▕     {
+     65▕         return version_compare(PHP_VERSION, '8.4.0', '<')
+     66▕             ? new PDO($dsn, $username, $password, $options)
+  ➜  67▕             : PDO::connect($dsn, $username, $password, $options); /** @phpstan-ignore staticMethod.notFound (PHP 8.4) */
+     68▕     }
+     69▕ 
+     70▕     /**
+     71▕      * Handle an exception that occurred during connect execution.
+
+  1   vendor\laravel\framework\src\Illuminate\Database\Connectors\Connector.php:67
+  2   vendor\laravel\framework\src\Illuminate\Database\Connectors\Connector.php:44
+
+  ────────────────────────────────────────────────────────────────────────────  
+   FAILED  Tests\Feature\Admin\InvoiceReturnIntegrityTest >…   QueryException   
+  SQLSTATE[HY000] [2002] Unknown error while connecting (Connection: mysql, Host: 127.0.0.1, Port: 3306, Database: sep_1_plantiq, SQL: select exists (select 1 from information_schema.tables where table_schema = schema() and table_name = 'migrations' and table_type in ('BASE TABLE', 'SYSTEM VERSIONED')) as `exists`)
+
+  at vendor\laravel\framework\src\Illuminate\Database\Connectors\Connector.php:67
+     63▕     protected function createPdoConnection($dsn, $username, #[\SensitiveParameter] $password, $options)
+     64▕     {
+     65▕         return version_compare(PHP_VERSION, '8.4.0', '<')
+     66▕             ? new PDO($dsn, $username, $password, $options)
+  ➜  67▕             : PDO::connect($dsn, $username, $password, $options); /** @phpstan-ignore staticMethod.notFound (PHP 8.4) */
+     68▕     }
+     69▕ 
+     70▕     /**
+     71▕      * Handle an exception that occurred during connect execution.
+
+  1   vendor\laravel\framework\src\Illuminate\Database\Connectors\Connector.php:67
+  2   vendor\laravel\framework\src\Illuminate\Database\Connectors\Connector.php:44
+
+  ────────────────────────────────────────────────────────────────────────────  
+   FAILED  Tests\Feature\Admin\InvoiceReturnIntegrityTest >…   QueryException   
+  SQLSTATE[HY000] [2002] Unknown error while connecting (Connection: mysql, Host: 127.0.0.1, Port: 3306, Database: sep_1_plantiq, SQL: select exists (select 1 from information_schema.tables where table_schema = schema() and table_name = 'migrations' and table_type in ('BASE TABLE', 'SYSTEM VERSIONED')) as `exists`)
+
+  at vendor\laravel\framework\src\Illuminate\Database\Connectors\Connector.php:67
+     63▕     protected function createPdoConnection($dsn, $username, #[\SensitiveParameter] $password, $options)
+     64▕     {
+     65▕         return version_compare(PHP_VERSION, '8.4.0', '<')
+     66▕             ? new PDO($dsn, $username, $password, $options)
+  ➜  67▕             : PDO::connect($dsn, $username, $password, $options); /** @phpstan-ignore staticMethod.notFound (PHP 8.4) */
+     68▕     }
+     69▕ 
+     70▕     /**
+     71▕      * Handle an exception that occurred during connect execution.
+
+  1   vendor\laravel\framework\src\Illuminate\Database\Connectors\Connector.php:67
+  2   vendor\laravel\framework\src\Illuminate\Database\Connectors\Connector.php:44
+
+  ────────────────────────────────────────────────────────────────────────────  
+   FAILED  Tests\Feature\Admin\InvoiceReturnIntegrityTest >…   QueryException   
+  SQLSTATE[HY000] [2002] Unknown error while connecting (Connection: mysql, Host: 127.0.0.1, Port: 3306, Database: sep_1_plantiq, SQL: select exists (select 1 from information_schema.tables where table_schema = schema() and table_name = 'migrations' and table_type in ('BASE TABLE', 'SYSTEM VERSIONED')) as `exists`)
+
+  at vendor\laravel\framework\src\Illuminate\Database\Connectors\Connector.php:67
+     63▕     protected function createPdoConnection($dsn, $username, #[\SensitiveParameter] $password, $options)
+     64▕     {
+     65▕         return version_compare(PHP_VERSION, '8.4.0', '<')
+     66▕             ? new PDO($dsn, $username, $password, $options)
+  ➜  67▕             : PDO::connect($dsn, $username, $password, $options); /** @phpstan-ignore staticMethod.notFound (PHP 8.4) */
+     68▕     }
+     69▕ 
+     70▕     /**
+     71▕      * Handle an exception that occurred during connect execution.
+
+  1   vendor\laravel\framework\src\Illuminate\Database\Connectors\Connector.php:67
+  2   vendor\laravel\framework\src\Illuminate\Database\Connectors\Connector.php:44
+
+  ────────────────────────────────────────────────────────────────────────────  
+   FAILED  Tests\Feature\Admin\InvoiceReturnIntegrityTest >…   QueryException   
+  SQLSTATE[HY000] [2002] Unknown error while connecting (Connection: mysql, Host: 127.0.0.1, Port: 3306, Database: sep_1_plantiq, SQL: select exists (select 1 from information_schema.tables where table_schema = schema() and table_name = 'migrations' and table_type in ('BASE TABLE', 'SYSTEM VERSIONED')) as `exists`)
+
+  at vendor\laravel\framework\src\Illuminate\Database\Connectors\Connector.php:67
+     63▕     protected function createPdoConnection($dsn, $username, #[\SensitiveParameter] $password, $options)
+     64▕     {
+     65▕         return version_compare(PHP_VERSION, '8.4.0', '<')
+     66▕             ? new PDO($dsn, $username, $password, $options)
+  ➜  67▕             : PDO::connect($dsn, $username, $password, $options); /** @phpstan-ignore staticMethod.notFound (PHP 8.4) */
+     68▕     }
+     69▕ 
+     70▕     /**
+     71▕      * Handle an exception that occurred during connect execution.
+
+  1   vendor\laravel\framework\src\Illuminate\Database\Connectors\Connector.php:67
+  2   vendor\laravel\framework\src\Illuminate\Database\Connectors\Connector.php:44
+
+  ────────────────────────────────────────────────────────────────────────────  
+   FAILED  Tests\Feature\Admin\InvoiceReturnIntegrityTest >…   QueryException   
+  SQLSTATE[HY000] [2002] Unknown error while connecting (Connection: mysql, Host: 127.0.0.1, Port: 3306, Database: sep_1_plantiq, SQL: select exists (select 1 from information_schema.tables where table_schema = schema() and table_name = 'migrations' and table_type in ('BASE TABLE', 'SYSTEM VERSIONED')) as `exists`)
+
+  at vendor\laravel\framework\src\Illuminate\Database\Connectors\Connector.php:67
+     63▕     protected function createPdoConnection($dsn, $username, #[\SensitiveParameter] $password, $options)
+     64▕     {
+     65▕         return version_compare(PHP_VERSION, '8.4.0', '<')
+     66▕             ? new PDO($dsn, $username, $password, $options)
+  ➜  67▕             : PDO::connect($dsn, $username, $password, $options); /** @phpstan-ignore staticMethod.notFound (PHP 8.4) */
+     68▕     }
+     69▕ 
+     70▕     /**
+     71▕      * Handle an exception that occurred during connect execution.
+
+  1   vendor\laravel\framework\src\Illuminate\Database\Connectors\Connector.php:67
+  2   vendor\laravel\framework\src\Illuminate\Database\Connectors\Connector.php:44
+
+  ────────────────────────────────────────────────────────────────────────────  
+   FAILED  Tests\Feature\Admin\InvoiceReturnIntegrityTest >…   QueryException   
+  SQLSTATE[HY000] [2002] Unknown error while connecting (Connection: mysql, Host: 127.0.0.1, Port: 3306, Database: sep_1_plantiq, SQL: select exists (select 1 from information_schema.tables where table_schema = schema() and table_name = 'migrations' and table_type in ('BASE TABLE', 'SYSTEM VERSIONED')) as `exists`)
+
+  at vendor\laravel\framework\src\Illuminate\Database\Connectors\Connector.php:67
+     63▕     protected function createPdoConnection($dsn, $username, #[\SensitiveParameter] $password, $options)
+     64▕     {
+     65▕         return version_compare(PHP_VERSION, '8.4.0', '<')
+     66▕             ? new PDO($dsn, $username, $password, $options)
+  ➜  67▕             : PDO::connect($dsn, $username, $password, $options); /** @phpstan-ignore staticMethod.notFound (PHP 8.4) */
+     68▕     }
+     69▕ 
+     70▕     /**
+     71▕      * Handle an exception that occurred during connect execution.
+
+  1   vendor\laravel\framework\src\Illuminate\Database\Connectors\Connector.php:67
+  2   vendor\laravel\framework\src\Illuminate\Database\Connectors\Connector.php:44
+
+
+  Tests:    10 failed (0 assertions)
+  Duration: 1.49s
+

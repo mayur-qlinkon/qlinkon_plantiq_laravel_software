@@ -1,0 +1,14 @@
+<svg
+xmlns="http://www.w3.org/2000/svg"
+viewBox="0 0 24 24"
+fill="none"
+stroke="currentColor"
+stroke-width="2"
+stroke-linecap="round"
+stroke-linejoin="round"
+class="w-3 h-3 sm:w-[15px] sm:h-[15px] text-gray-400"
+>
+<path d="M3 9l1-5h16l1 5" />
+<path d="M5 9v11h14V9" />
+<path d="M9 20V12h6v8" />
+</svg>

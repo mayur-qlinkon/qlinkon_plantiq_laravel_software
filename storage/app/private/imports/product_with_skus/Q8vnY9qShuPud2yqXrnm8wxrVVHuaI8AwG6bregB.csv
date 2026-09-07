@@ -1,0 +1,3 @@
+name,slug,category_slug,unit,product_type,description,sku,price,cost,mrp,barcode,stock_alert,warehouse_name,stock_qty
+"Import Rose A",import-rose-a,general,pcs,sellable,"d",IMP-A,100,60,120,,5,"Main Warehouse",10
+"Import Rose B",import-rose-b,general,pcs,sellable,"d",IMP-B,200,120,240,,5,"Main Warehouse",5

@@ -1,0 +1,7 @@
+﻿name,slug
+Indoor Plants,indoor-plants
+Succulents,succulents
+Outdoor Plants,outdoor-plants
+Flowering,flowers
+Indoor Plants,indoor-plants
+Indoor Plants,indoor-plants

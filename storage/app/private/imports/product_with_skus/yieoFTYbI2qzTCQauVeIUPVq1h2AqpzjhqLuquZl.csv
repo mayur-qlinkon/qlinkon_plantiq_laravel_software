@@ -1,0 +1,2 @@
+name,slug,category_slug,unit,product_type,description,sku,price,cost,mrp,barcode,stock_alert,warehouse_name,stock_qty
+"New Cat Row",new-cat-row,brandnewcat,newunit,sellable,"d",IMP-NEWCAT,100,60,120,,5,"Nonexistent WH",10
